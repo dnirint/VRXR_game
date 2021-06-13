@@ -9,6 +9,7 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     public GameObject projectilePrefab;
     public GameObject[] bossTargets;
+    public Transform projectileParent;
 
     public bool isAttacking = true;
     public float attackCooldownFactor = 5f;
@@ -42,10 +43,9 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void AttackRandomTarget()
     {
-        Random r = new Random();
         int randomIndex = Random.Range(0, bossTargets.Length);
         Debug.Log($"Targeting {randomIndex}/{bossTargets.Length}");
-        var newProjectileGO = Instantiate(projectilePrefab, boss.transform);
+        var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
         Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
         newProjectile.origin = boss.transform.position;
         newProjectile.targetGO = bossTargets[randomIndex];
