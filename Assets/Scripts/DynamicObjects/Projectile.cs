@@ -12,11 +12,13 @@ public class Projectile : MonoBehaviour
     public UnityEvent TargetHit;
     private Transform target;
     private Vector3 direction;
+    public float distanceToTarget { get; private set; }
     void Start()
     {
         target = targetGO.transform;
         transform.LookAt(target);
         direction = (target.position - origin).normalized;
+        distanceToTarget = Vector3.Distance(transform.position, target.position);
     }
 
     
@@ -27,10 +29,10 @@ public class Projectile : MonoBehaviour
             direction = target.position - origin;
         }
         transform.position += transform.forward * speedFactor * Time.deltaTime;
-        if (Vector3.Distance(transform.position, target.position) < 0.1)
+        distanceToTarget = Vector3.Distance(transform.position, target.position);
+        if (distanceToTarget < 0.1)
         {
             TargetHit.Invoke();
-            Destroy(gameObject);
         }
 
     }
