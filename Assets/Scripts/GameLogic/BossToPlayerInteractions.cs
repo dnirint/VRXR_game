@@ -11,7 +11,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     public GameObject[] bossTargets;
     public Transform projectileParent;
 
-    public bool isAttacking = true;
+    public bool isAttacking = false;
     public float attackCooldownFactor = 5f;
 
     private float lastAttackTime = 0f;
@@ -39,6 +39,11 @@ public class BossToPlayerInteractions : MonoBehaviour
             lastAttackTime = Time.time;
             AttackRandomTarget();
         }
+    }
+
+    public void AttackToBeat()
+    {
+        AttackRandomTarget();
     }
 
     void AttackRandomTarget()
