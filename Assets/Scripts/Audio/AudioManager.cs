@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour
         //_audioProcessor.onBeat.AddListener(PlayAudio);
         currentBPM = getBPM();
         beatInterval = 60f / currentBPM;
+        Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {beatInterval} seconds per beat.");
         setVolumeForAnalysisMusic(-80);
         _audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
         playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
