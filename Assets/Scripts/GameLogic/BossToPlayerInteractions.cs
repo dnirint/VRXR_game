@@ -11,8 +11,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     public Transform projectileParent;
 
     public bool isAttacking = true;
-    public float attackCooldownFactor = 5f;
-
+    public float attackCooldown = 5f;
     private float lastAttackTime = 0f;
     private GameObject boss;
 
@@ -36,6 +35,8 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void Start()
     {
+        lastAttackTime = Time.time;
+        attackCooldown = AudioManager.Instance.currentBPS;
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         //StartCoroutine(SwitchTargets());
@@ -60,8 +61,9 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void AttackTarget()
     {
-        if (isAttacking)
+        if (isAttacking && lastAttackTime + attackCooldown < Time.time)
         {
+            lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
             Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
             var newProjectileGO = Instantiate(projectilePrefab, projectileParent);

@@ -8,10 +8,12 @@ using UnityEngine.Events;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioProcessor _audioProcessor;
-    [SerializeField] private int currentBPM = 160;
+    [SerializeField] public int currentBPM = 60;
+    [SerializeField] public float currentBPS = 1f;
     public AudioSource playerAudioSource;
     public float timeToFirstBeat = 0.2f;
     public float beatInterval = 0.5f;
+    public float beatCooldown = 0;
     public AudioSource audioSource;
     public UnityEvent OnBeatStart;
     public UnityEvent OnBeatEnd;
@@ -35,7 +37,9 @@ public class AudioManager : MonoBehaviour
     {
         //_audioProcessor.onBeat.AddListener(PlayAudio);
         currentBPM = getBPM();
-        beatInterval = 60f / currentBPM;
+        currentBPS = 60f / currentBPM;
+        beatInterval = currentBPS;
+        beatCooldown = beatInterval / 2;
         Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {beatInterval} seconds per beat.");
         setVolumeForAnalysisMusic(-80);
         _audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
@@ -72,9 +76,9 @@ public class AudioManager : MonoBehaviour
     {
         if (!isInsideInterval)
         {
+            isInsideInterval = true;
             StartCoroutine(EnterBeatInterval());
             StartCoroutine(EnterActualBeatInterval(timeDifferenceWithBeatDetector));
-
         }
     }
 
@@ -84,19 +88,20 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSeconds(waitBeforeInvokingSeconds);
         Debug.Log($"ACTUAL BEAT!");
         OnActualBeatStart.Invoke();
-        yield return new WaitForSeconds(beatInterval/2);
+        yield return new WaitForSeconds(beatCooldown);
         OnActualBeatEnd.Invoke();
     }
 
     IEnumerator EnterBeatInterval()
     {
         Debug.Log($"BEAT_START");
-        isInsideInterval = true;
         OnBeatStart.Invoke();
-        yield return new WaitForSeconds(beatInterval/2);
+        yield return new WaitForSeconds(beatCooldown);
         OnBeatEnd.Invoke();
         isInsideInterval = false;
         Debug.Log($"BEAT_END");
+       
+
     }
 
 
