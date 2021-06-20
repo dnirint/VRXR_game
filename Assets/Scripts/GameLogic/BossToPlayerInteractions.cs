@@ -40,7 +40,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         //StartCoroutine(SwitchTargets());
-        //AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
         targetQueues = new List<HashSet<Projectile>>();
         foreach (var target in bossTargets)
         {

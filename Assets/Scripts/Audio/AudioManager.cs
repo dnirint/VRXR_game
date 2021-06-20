@@ -35,8 +35,7 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //_audioProcessor.onBeat.AddListener(PlayAudio);
-        
+
         Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {beatInterval} seconds per beat.");
         setVolumeForAnalysisMusic(-80);
         //_audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
@@ -59,7 +58,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public float clipWindowSizeInSeconds = 3f;
+    public float clipWindowSizeInSeconds = 7f;
     public float clipWindowUpdateCooldown = 1f;
     private float lastWindowUpdateTime = 0;
 
@@ -72,10 +71,10 @@ public class AudioManager : MonoBehaviour
         currentBPM = newBPM;
         currentBPS = 60f / currentBPM;
         beatInterval = currentBPS;
-        beatCooldown = beatInterval / 16;
+        beatCooldown = beatInterval / 4;
         Debug.Log($"New BPM: {newBPM}");
         var elapsed = Time.time - startTime;
-        yield return new WaitForSeconds(timeDifferenceWithBeatDetector);
+        yield return new WaitForSeconds(timeDifferenceWithBeatDetector - elapsed);
         yield return null;
     }
 
