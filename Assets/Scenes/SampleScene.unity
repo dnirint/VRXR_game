@@ -1447,7 +1447,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8443397812353138746, guid: 26793742664adc24aa98ec2ec3fa9931, type: 3}
       propertyPath: OnBeatStart.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8443397812353138746, guid: 26793742664adc24aa98ec2ec3fa9931, type: 3}
       propertyPath: OnBeatStart.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -1725,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 1206422469}
     - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: isAttacking
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}

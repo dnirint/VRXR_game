@@ -4960,6 +4960,7 @@ MonoBehaviour:
   TargetHit:
     m_PersistentCalls:
       m_Calls: []
+  timeToTarget: 1
 --- !u!1 &6542693175618967082
 GameObject:
   m_ObjectHideFlags: 0

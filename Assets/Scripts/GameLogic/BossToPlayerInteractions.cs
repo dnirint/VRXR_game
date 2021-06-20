@@ -10,16 +10,15 @@ public class BossToPlayerInteractions : MonoBehaviour
     public GameObject[] bossTargets;
     public Transform projectileParent;
 
-    public bool isAttacking = false;
+    public bool isAttacking = true;
     public float attackCooldownFactor = 5f;
 
     private float lastAttackTime = 0f;
     private GameObject boss;
 
-    private int currentTargetIndex = 0;
     private float timeBetweenSwitches = 10;
     private bool shouldSwitchTargets = true;
-
+    private int curTargetIndex = 0;
     private List<HashSet<Projectile>> targetQueues;
 
     private void Awake()
@@ -34,8 +33,8 @@ public class BossToPlayerInteractions : MonoBehaviour
     {
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
-        StartCoroutine(SwitchTargets()); 
-
+        StartCoroutine(SwitchTargets());
+        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
         targetQueues = new List<HashSet<Projectile>>();
         foreach (var target in bossTargets)
         {
@@ -50,19 +49,28 @@ public class BossToPlayerInteractions : MonoBehaviour
             Debug.DrawLine(boss.transform.position, target.transform.position);
         }
 
-        if (isAttacking && attackCooldownFactor + lastAttackTime < Time.time)
-        {
-            lastAttackTime = Time.time;
-            AttackRandomTarget();
-        }
     }
 
     public void AttackToBeat()
     {
-//        AttackRandomTarget();
         AttackTarget();
     }
 
+    void AttackTarget()
+    {
+        if (isAttacking)
+        {
+            int startTargetIndex = curTargetIndex;
+            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
+            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
+            Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
+            newProjectile.origin = boss.transform.position;
+            newProjectile.targetGO = bossTargets[curTargetIndex];
+            targetQueues[startTargetIndex].Add(newProjectile);
+            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
+        }
+
+    }
     void AttackRandomTarget()
     {
         int randomIndex = Random.Range(0, bossTargets.Length);
@@ -117,14 +125,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         return closestProjectile;
     }
 
-    void AttackTarget()
-    {
-        Debug.Log($"Targeting {currentTargetIndex}/{bossTargets.Length}");
-        var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
-        Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
-        newProjectile.origin = boss.transform.position;
-        newProjectile.targetGO = bossTargets[currentTargetIndex];
-    }
+
 
     IEnumerator SwitchTargets()
     {
@@ -137,12 +138,12 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void SetNewTarget()
     {
-        int randomIndex = Random.Range(0, bossTargets.Length);
-        while (randomIndex == currentTargetIndex)
+        int new_target_index = Random.Range(0, bossTargets.Length);
+        while (curTargetIndex == new_target_index)
         {
-            randomIndex = Random.Range(0, bossTargets.Length);
+            new_target_index = Random.Range(0, bossTargets.Length);
         }
+        curTargetIndex = new_target_index;
 
-        currentTargetIndex = randomIndex;
     }
 }
