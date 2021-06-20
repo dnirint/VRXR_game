@@ -12,11 +12,12 @@ public class DrumScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         // connect the drum collision detection to the interaction cooldown system
-        if (drumTop != null && interactionController != null)
-        {
-            drumTop.GetComponent<DrumCollision>().PlayerTouchedDrum.AddListener(interactionController.OnEnterCooldown);
-        }
+        //if (drumTop != null && interactionController != null)
+        //{
+        //    drumTop.GetComponent<DrumCollision>().PlayerTouchedDrum.AddListener(interactionController.OnEnterCooldown);
+        //}
         
     }
 

@@ -251,21 +251,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &310277103 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5436271074119560826, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
-  m_PrefabInstance: {fileID: 5852580313333903134}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &310277104 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5436271073983235180, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
-  m_PrefabInstance: {fileID: 5852580313333903134}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &310277105 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5436271073448582483, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
-  m_PrefabInstance: {fileID: 5852580313333903134}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &325377401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,6 +1276,11 @@ MonoBehaviour:
   m_TrackingType: 0
   m_UpdateType: 0
   m_UseRelativeTransform: 0
+--- !u!1 &1017749816 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8795317273225801500, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
+  m_PrefabInstance: {fileID: 5852580313333903134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1206422468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,6 +1311,16 @@ Transform:
   m_Father: {fileID: 1665407443}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1272388345 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8795317273760495139, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
+  m_PrefabInstance: {fileID: 5852580313333903134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1285013830 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8795317272284169482, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
+  m_PrefabInstance: {fileID: 5852580313333903134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1472708982 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5216212174041537186, guid: f759768ffd1578843aaee7cb10860b07, type: 3}
@@ -1823,15 +1823,15 @@ PrefabInstance:
     - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: bossTargets.Array.data[0]
       value: 
-      objectReference: {fileID: 310277105}
+      objectReference: {fileID: 1272388345}
     - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: bossTargets.Array.data[1]
       value: 
-      objectReference: {fileID: 310277104}
+      objectReference: {fileID: 1017749816}
     - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: bossTargets.Array.data[2]
       value: 
-      objectReference: {fileID: 310277103}
+      objectReference: {fileID: 1285013830}
     - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: projectileParent
       value: 

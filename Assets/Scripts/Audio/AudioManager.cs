@@ -50,7 +50,7 @@ public class AudioManager : MonoBehaviour
     {
 
         playerAudioSource.time = audioSource.time + timeDifferenceWithBeatDetector;
-        Debug.Log($"CURRENT BPM : {currentBPM}");
+        //Debug.Log($"CURRENT BPM : {currentBPM}");
         if (lastWindowUpdateTime + clipWindowUpdateCooldown < Time.time)
         {
             lastWindowUpdateTime = Time.time;

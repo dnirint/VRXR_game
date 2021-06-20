@@ -8,6 +8,7 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     public GameObject projectilePrefab;
     public GameObject[] bossTargets;
+    public List<List<GameObject>> bossTargetClusters;
     public Transform projectileParent;
 
     public bool isAttacking = true;
@@ -39,13 +40,26 @@ public class BossToPlayerInteractions : MonoBehaviour
         
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
-        //StartCoroutine(SwitchTargets());
+        StartCoroutine(SwitchTargets());
         AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+        bossTargetClusters = new List<List<GameObject>>();
+        foreach (var target in bossTargets)
+        {
+            bossTargetClusters.Add(target.GetComponent<PlatformTargets>().targetList);
+        }
         targetQueues = new List<HashSet<Projectile>>();
         foreach (var target in bossTargets)
         {
             targetQueues.Add(new HashSet<Projectile>());
         }
+    }
+
+    private int specificTargetInPlatformIndex = 0;
+    GameObject GetSpecificTarget()
+    {
+        var platform = bossTargetClusters[curTargetIndex];
+        int ind = (specificTargetInPlatformIndex++) % platform.Count;
+        return platform[ind];
     }
 
     void Update()
@@ -61,13 +75,17 @@ public class BossToPlayerInteractions : MonoBehaviour
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
             newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
-            newProjectile.targetGO = bossTargets[curTargetIndex];
+            newProjectile.targetGO = GetSpecificTarget();
             targetQueues[startTargetIndex].Add(newProjectile);
             newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
         }
-        foreach (var target in bossTargets)
+        foreach (var platform in bossTargetClusters)
         {
-            Debug.DrawLine(boss.transform.position, target.transform.position);
+            foreach (var target in platform)
+            {
+                Debug.DrawLine(boss.transform.position, target.transform.position);
+            }
+            
         }
 
     }
@@ -104,6 +122,7 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     public void DestroyClosestProjectileOnSameLane(GameObject target)
     {
+        Debug.Log($"KILLING");
         for (int i=0; i<bossTargets.Length; i++)
         {
             if (bossTargets[i] == target)
@@ -156,6 +175,7 @@ public class BossToPlayerInteractions : MonoBehaviour
             new_target_index = Random.Range(0, bossTargets.Length);
         }
         curTargetIndex = new_target_index;
+        specificTargetInPlatformIndex = 0;
 
     }
 }

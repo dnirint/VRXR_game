@@ -6,7 +6,7 @@ public class DrumInteractionController : MonoBehaviour
 {
     public bool isEnabled { get; private set; } = true;
 
-    public bool isInteractable { get; private set; } = false;
+    public bool isInteractable { get; private set; } = true;
 
     public float interactionCooldown { get; private set; } = 0.1f;
 
@@ -20,10 +20,11 @@ public class DrumInteractionController : MonoBehaviour
 
     void Update()
     {
-        if (isEnabled && !isInteractable && lastInteractionTime + interactionCooldown < Time.time)
-        {
-            isInteractable = true;
-        }
+        //if (isEnabled && !isInteractable && lastInteractionTime + interactionCooldown < Time.time)
+        //{
+        //    isInteractable = true;
+        //}
+
     }
 
     public void SetEnabled(bool val)
