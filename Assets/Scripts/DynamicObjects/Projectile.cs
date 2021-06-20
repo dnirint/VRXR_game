@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour
     private Transform target;
     private Vector3 direction;
 
+    public float distanceToTarget { get; private set; }
     void Start()
     {
 //        startingPos = transform.position;
@@ -22,6 +23,8 @@ public class Projectile : MonoBehaviour
         transform.LookAt(target);
         direction = (targetPos - origin).normalized;
         StartCoroutine(MoveToTargetInTime());
+        direction = (target.position - origin).normalized;
+        distanceToTarget = Vector3.Distance(transform.position, target.position);
     }
 
 //    
@@ -68,9 +71,11 @@ public class Projectile : MonoBehaviour
         }
 
         if (Vector3.Distance(transform.position, target.position) < 0.1)
+        transform.position += transform.forward * speedFactor * Time.deltaTime;
+        distanceToTarget = Vector3.Distance(transform.position, target.position);
+        if (distanceToTarget < 0.1)
         {
             TargetHit.Invoke();
-            Destroy(gameObject);
         }
     }
 

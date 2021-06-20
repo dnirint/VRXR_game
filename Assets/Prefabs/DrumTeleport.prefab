@@ -130,6 +130,7 @@ MonoBehaviour:
   drumTop: {fileID: 4908227761788982767}
   drumBody: {fileID: 2841687941577159893}
   interactionController: {fileID: 494899638531515835}
+  drumCollision: {fileID: 1878825473595390659}
 --- !u!114 &494899638531515835
 MonoBehaviour:
   m_ObjectHideFlags: 0

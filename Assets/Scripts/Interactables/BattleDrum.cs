@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class BattleDrum : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     void Start()
     {
-        
+        GetComponent<DrumScript>().drumCollision.PlayerTouchedDrum.AddListener(() => { BossToPlayerInteractions.Instance.DestroyClosestProjectileOnSameLane(gameObject); });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
