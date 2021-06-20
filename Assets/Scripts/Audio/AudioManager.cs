@@ -9,13 +9,14 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioProcessor _audioProcessor;
     [SerializeField] private int currentBPM = 160;
+    public AudioSource playerAudioSource;
     public float timeToFirstBeat = 0.2f;
     public float beatInterval = 0.5f;
     public AudioSource audioSource;
     public UnityEvent OnBeatStart;
     public UnityEvent OnBeatEnd;
     private bool isInsideInterval = false;
-
+    private float timeDistanceBetweenAudioPlayers = 0.1f;
     public AudioMixer audioMixer;
     public static AudioManager Instance { get; private set; } = null;
 
@@ -35,7 +36,12 @@ public class AudioManager : MonoBehaviour
         beatInterval = 60f / currentBPM;
         setVolumeForAnalysisMusic(-80);
         _audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
+        playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
+        playerAudioSource.clip = audioSource.clip;
+        PlayAudio();
     }
+
+
 
     int getBPM()
     {
@@ -66,17 +72,20 @@ public class AudioManager : MonoBehaviour
         Debug.Log($"BEAT_END");
     }
 
-    IEnumerator PlayAudioFromBeat()
+
+
+    private IEnumerator PlayAudioWithDistance()
     {
-        Debug.Log("Playing Audio from first beat");
-        yield return new WaitForSeconds(timeToFirstBeat);
         audioSource.Play();
+        yield return new WaitForSeconds(timeDistanceBetweenAudioPlayers);
+        playerAudioSource.Play();
     }
 
     private void PlayAudio()
     {
-        _audioProcessor.onBeat.RemoveListener(PlayAudio);
+        //_audioProcessor.onBeat.RemoveListener(PlayAudio);
+        Debug.Log($"Starting to play {audioSource.clip.name}");
+        StartCoroutine(PlayAudioWithDistance());
         timeToFirstBeat = _audioProcessor.audioSource.time;
-        StartCoroutine(PlayAudioFromBeat());
     }
 }
