@@ -36,13 +36,10 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         //_audioProcessor.onBeat.AddListener(PlayAudio);
-        currentBPM = getBPM();
-        currentBPS = 60f / currentBPM;
-        beatInterval = currentBPS;
-        beatCooldown = beatInterval / 2;
+        
         Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {beatInterval} seconds per beat.");
         setVolumeForAnalysisMusic(-80);
-        _audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
+        //_audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
         playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
         playerAudioSource.clip = audioSource.clip;
         PlayAudio();
@@ -52,7 +49,51 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
+
         playerAudioSource.time = audioSource.time + timeDifferenceWithBeatDetector;
+        Debug.Log($"CURRENT BPM : {currentBPM}");
+        if (lastWindowUpdateTime + clipWindowUpdateCooldown < Time.time)
+        {
+            lastWindowUpdateTime = Time.time;
+            StartCoroutine(UpdateBPM());
+        }
+    }
+
+    public float clipWindowSizeInSeconds = 3f;
+    public float clipWindowUpdateCooldown = 1f;
+    private float lastWindowUpdateTime = 0;
+
+    IEnumerator UpdateBPM()
+    {
+        var startTime = Time.time;
+        var curAudioTime = audioSource.time;
+        var curAudioClip = MakeSubclip(audioSource.clip, curAudioTime, curAudioTime + clipWindowSizeInSeconds);
+        var newBPM = UniBpmAnalyzer.AnalyzeBpm(curAudioClip);
+        currentBPM = newBPM;
+        currentBPS = 60f / currentBPM;
+        beatInterval = currentBPS;
+        beatCooldown = beatInterval / 16;
+        Debug.Log($"New BPM: {newBPM}");
+        var elapsed = Time.time - startTime;
+        yield return new WaitForSeconds(timeDifferenceWithBeatDetector);
+        yield return null;
+    }
+
+    private AudioClip MakeSubclip(AudioClip clip, float start, float stop)
+    {
+        /* Create a new audio clip */
+        int frequency = clip.frequency;
+        float timeLength = stop - start;
+        int samplesLength = (int)(frequency * timeLength);
+        AudioClip newClip = AudioClip.Create(clip.name + "-sub", samplesLength, 1, frequency, false);
+        /* Create a temporary buffer for the samples */
+        float[] data = new float[samplesLength];
+        /* Get the data from the original clip */
+        clip.GetData(data, (int)(frequency * start));
+        /* Transfer the data to the new clip */
+        newClip.SetData(data, 0);
+        /* Return the sub clip */
+        return newClip;
     }
 
     public float TimeToActualBeat()

@@ -36,11 +36,11 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Start()
     {
         lastAttackTime = Time.time;
-        attackCooldown = AudioManager.Instance.currentBPS;
+        
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         //StartCoroutine(SwitchTargets());
-        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+        //AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
         targetQueues = new List<HashSet<Projectile>>();
         foreach (var target in bossTargets)
         {
@@ -50,6 +50,21 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void Update()
     {
+        attackCooldown = AudioManager.Instance.currentBPS;
+        if (isAttacking && lastAttackTime + attackCooldown < Time.time)
+        //if (isAttacking)
+        {
+            lastAttackTime = Time.time;
+            int startTargetIndex = curTargetIndex;
+            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
+            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
+            Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
+            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
+            newProjectile.origin = boss.transform.position;
+            newProjectile.targetGO = bossTargets[curTargetIndex];
+            targetQueues[startTargetIndex].Add(newProjectile);
+            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
+        }
         foreach (var target in bossTargets)
         {
             Debug.DrawLine(boss.transform.position, target.transform.position);
@@ -62,6 +77,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     void AttackTarget()
     {
         if (isAttacking && lastAttackTime + attackCooldown < Time.time)
+            //if (isAttacking)
         {
             lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
