@@ -84,7 +84,7 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSeconds(waitBeforeInvokingSeconds);
         Debug.Log($"ACTUAL BEAT!");
         OnActualBeatStart.Invoke();
-        yield return new WaitForSeconds(beatInterval);
+        yield return new WaitForSeconds(beatInterval/2);
         OnActualBeatEnd.Invoke();
     }
 
@@ -93,7 +93,7 @@ public class AudioManager : MonoBehaviour
         Debug.Log($"BEAT_START");
         isInsideInterval = true;
         OnBeatStart.Invoke();
-        yield return new WaitForSeconds(beatInterval);
+        yield return new WaitForSeconds(beatInterval/2);
         OnBeatEnd.Invoke();
         isInsideInterval = false;
         Debug.Log($"BEAT_END");

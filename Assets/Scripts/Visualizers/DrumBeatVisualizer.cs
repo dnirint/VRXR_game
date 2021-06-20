@@ -11,18 +11,40 @@ public class DrumBeatVisualizer : MonoBehaviour
     public Color outOfBeatColor = Color.black;
     private bool isTransitioning = false;
     public float transitionTime = 1f;
-    public bool shouldVisualize = false;
+    public bool shouldVisualize = true;
+    float startAfterSeconds = 0;
     void Start()
     {
+        startAfterSeconds = Mathf.Max(0, AudioManager.Instance.timeDifferenceWithBeatDetector - transitionTime);
         drumTopMaterial = drumTop.GetComponent<Renderer>().material;
         if (shouldVisualize)
         {
-            AudioManager.Instance.OnBeatStart.AddListener(() => { StartCoroutine(TransitionToActiveColor()); });
-            AudioManager.Instance.OnActualBeatEnd.AddListener(TransitionToInactiveColor);
+            //AudioManager.Instance.OnBeatStart.AddListener(() => { StartCoroutine(TransitionToActiveColor()); });
+            //AudioManager.Instance.OnActualBeatEnd.AddListener(TransitionToInactiveColor);
+
+            AudioManager.Instance.OnActualBeatStart.AddListener(VisualizeInBeat);
+            AudioManager.Instance.OnActualBeatEnd.AddListener(VisualizeOutOfBeat);
         }
 
-        //AudioManager.Instance.OnActualBeatStart.AddListener(OnEnterBeatVisualize);
-        //AudioManager.Instance.OnActualBeatEnd.AddListener(OnExitBeatVisualize);
+        
+    }
+
+    void VisualizeInBeat()
+    {
+        if (!isInsideBeat)
+        {
+            drumTopMaterial.color = inBeatColor;
+            isInsideBeat = true;
+        }
+    }
+
+    void VisualizeOutOfBeat()
+    {
+        if (isInsideBeat)
+        {
+            drumTopMaterial.color = outOfBeatColor;
+            isInsideBeat = false;
+        }
     }
 
 
@@ -40,31 +62,44 @@ public class DrumBeatVisualizer : MonoBehaviour
     float startTime = 0;
     IEnumerator TransitionToActiveColor()
     {
-        float startAfterSeconds = Mathf.Max(0, AudioManager.Instance.timeDifferenceWithBeatDetector - transitionTime);
-        Debug.Log($"startAfterSeconds = {startAfterSeconds}");
-        yield return new WaitForSeconds(startAfterSeconds);
         if (!isTransitioning)
         {
+            float startAfterSeconds = Mathf.Max(0, AudioManager.Instance.timeDifferenceWithBeatDetector - transitionTime);
+            Debug.Log($"startAfterSeconds = {startAfterSeconds}");
+            yield return new WaitForSeconds(startAfterSeconds);
             Debug.Log($"TRANSITIONING");
-            isTransitioning = true;
             startTime = Time.time;
-            //PerformTransition();
+            isTransitioning = true;
+            while (isTransitioning)
+            {
+                float elapsed = Time.time - startTime;
+                float ratio = Mathf.Min(elapsed / transitionTime, 1);
+                Color lerpedColor = Color.Lerp(outOfBeatColor, inBeatColor, ratio);
+                drumTopMaterial.color = lerpedColor;
+                if (ratio == 1)
+                {
+                    isTransitioning = false;
+                    drumTopMaterial.color = outOfBeatColor;
+                }
+                yield return null;
+            }
+            
         }
     }
 
-    private void Update()
+    void Update()
     {
-        if (isTransitioning)
-        {
-            float elapsed = Time.time - startTime;
-            float ratio = Mathf.Min(elapsed / transitionTime, 1);
-            Color lerpedColor = Color.Lerp(outOfBeatColor, inBeatColor, ratio);
-            drumTopMaterial.color = lerpedColor;
-            if (ratio == 1)
-            {
-                isTransitioning = false;
-            }
-        }
+        //if (isTransitioning)
+        //{
+        //    float elapsed = Time.time - startTime;
+        //    float ratio = Mathf.Min(elapsed / transitionTime, 1);
+        //    Color lerpedColor = Color.Lerp(outOfBeatColor, inBeatColor, ratio);
+        //    drumTopMaterial.color = lerpedColor;
+        //    if (ratio == 1)
+        //    {
+        //        isTransitioning = false;
+        //    }
+        //}
     }
 
     IEnumerator PerformTransition()
@@ -81,6 +116,7 @@ public class DrumBeatVisualizer : MonoBehaviour
             yield return null;
         }
         isTransitioning = false;
+        
     }
 
 

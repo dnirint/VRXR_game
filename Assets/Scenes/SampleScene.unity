@@ -1678,6 +1678,14 @@ PrefabInstance:
       propertyPath: onBeat.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6191802483391859904, guid: 26793742664adc24aa98ec2ec3fa9931, type: 3}
+      propertyPath: bufferSize
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 6191802483391859904, guid: 26793742664adc24aa98ec2ec3fa9931, type: 3}
+      propertyPath: gThresh
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26793742664adc24aa98ec2ec3fa9931, type: 3}
 --- !u!1001 &5852580313333903134
@@ -1687,6 +1695,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 760568574}
     m_Modifications:
+    - target: {fileID: 1506522389394125977, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
+      propertyPath: shouldVisualize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5852580312675498910, guid: d1301a10266225c4c8bcb6cec9d5771e, type: 3}
       propertyPath: m_Name
       value: Static
