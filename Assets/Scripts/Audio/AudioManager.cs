@@ -15,6 +15,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSource;
     public UnityEvent OnBeatStart;
     public UnityEvent OnBeatEnd;
+    public UnityEvent OnActualBeatStart;
+    public UnityEvent OnActualBeatEnd;
     private bool isInsideInterval = false;
     public float timeDifferenceWithBeatDetector { get; private set; } = 3f;
     public AudioMixer audioMixer;
@@ -41,6 +43,8 @@ public class AudioManager : MonoBehaviour
         playerAudioSource.clip = audioSource.clip;
         PlayAudio();
     }
+
+
 
     private void Update()
     {
@@ -69,7 +73,19 @@ public class AudioManager : MonoBehaviour
         if (!isInsideInterval)
         {
             StartCoroutine(EnterBeatInterval());
+            StartCoroutine(EnterActualBeatInterval(timeDifferenceWithBeatDetector));
+
         }
+    }
+
+
+    IEnumerator EnterActualBeatInterval(float waitBeforeInvokingSeconds)
+    {
+        yield return new WaitForSeconds(waitBeforeInvokingSeconds);
+        Debug.Log($"ACTUAL BEAT!");
+        OnActualBeatStart.Invoke();
+        yield return new WaitForSeconds(beatInterval);
+        OnActualBeatEnd.Invoke();
     }
 
     IEnumerator EnterBeatInterval()

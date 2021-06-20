@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 4908227761641187108}
   - component: {fileID: 3829057613984823602}
   - component: {fileID: 494899638531515835}
+  - component: {fileID: 5591205842242238585}
   m_Layer: 0
   m_Name: Drum
   m_TagString: Untagged
@@ -142,6 +143,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c982911de4950f04e8ab8e55bc6ddc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5591205842242238585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908227761641187115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b01927580281ec468f629788497963b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drumTop: {fileID: 4908227761788982767}
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,8 @@ public class BossController : MonoBehaviour
     public GameObject boss = null;
     public static BossController Instance { get; private set; } = null;
     private Transform player;
-    private bool followPlayer = true;
+    private bool followPlayer = false;
+    
 
     private void Awake()
     {
@@ -27,6 +28,10 @@ public class BossController : MonoBehaviour
         if (followPlayer)
         {
             boss.transform.LookAt(player);
+        }
+        else
+        {
+            boss.transform.LookAt(BossToPlayerInteractions.Instance.GetCurrentTarget().transform);
         }
     }
 }

@@ -29,6 +29,11 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
     }
 
+    public GameObject GetCurrentTarget()
+    {
+        return bossTargets[curTargetIndex];
+    }
+
     void Start()
     {
         boss = BossController.Instance.boss;
