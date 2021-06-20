@@ -18,6 +18,7 @@ public class Projectile : MonoBehaviour
     public float distanceToTarget { get; private set; }
     void Start()
     {
+        Debug.Log($"New projectile with {timeToTarget}");
         //        startingPos = transform.position;
         target = targetGO.transform;
         targetPos = target.position;
@@ -56,9 +57,8 @@ public class Projectile : MonoBehaviour
     #region ProjectileMovementOverTime
 
     //[SerializeField] private float timeToTarget = 10f;
-    [SerializeField] private float timeToTarget = 1f;
+    [SerializeField] public float timeToTarget = 1f;
 
-    private float currentTime = 0;
 
     //    private Vector3 startingPos;
     private Vector3 targetPos;

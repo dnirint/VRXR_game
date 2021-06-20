@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     public UnityEvent OnBeatStart;
     public UnityEvent OnBeatEnd;
     private bool isInsideInterval = false;
-    private float timeDistanceBetweenAudioPlayers = 0.1f;
+    public float timeDifferenceWithBeatDetector { get; private set; } = 3f;
     public AudioMixer audioMixer;
     public static AudioManager Instance { get; private set; } = null;
 
@@ -40,6 +40,16 @@ public class AudioManager : MonoBehaviour
         playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
         playerAudioSource.clip = audioSource.clip;
         PlayAudio();
+    }
+
+    private void Update()
+    {
+        playerAudioSource.time = audioSource.time + timeDifferenceWithBeatDetector;
+    }
+
+    public float TimeToActualBeat()
+    {
+        return timeDifferenceWithBeatDetector;
     }
 
 
@@ -78,7 +88,7 @@ public class AudioManager : MonoBehaviour
     private IEnumerator PlayAudioWithDistance()
     {
         audioSource.Play();
-        yield return new WaitForSeconds(timeDistanceBetweenAudioPlayers);
+        yield return new WaitForSeconds(timeDifferenceWithBeatDetector);
         playerAudioSource.Play();
     }
 

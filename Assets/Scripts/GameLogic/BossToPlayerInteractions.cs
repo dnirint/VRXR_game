@@ -51,10 +51,7 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     }
 
-    public void AttackToBeat()
-    {
-        AttackTarget();
-    }
+
 
     void AttackTarget()
     {
@@ -64,6 +61,7 @@ public class BossToPlayerInteractions : MonoBehaviour
             Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
             var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
+            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
             newProjectile.targetGO = bossTargets[curTargetIndex];
             targetQueues[startTargetIndex].Add(newProjectile);
@@ -71,17 +69,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
 
     }
-    void AttackRandomTarget()
-    {
-        int randomIndex = Random.Range(0, bossTargets.Length);
-        Debug.Log($"Targeting {randomIndex}/{bossTargets.Length}");
-        var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
-        Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
-        newProjectile.origin = boss.transform.position;
-        newProjectile.targetGO = bossTargets[randomIndex];
-        targetQueues[randomIndex].Add(newProjectile);
-        newProjectile.TargetHit.AddListener(() => { OnTargetHit(randomIndex, newProjectile); });
-    }
+
 
 
     void OnTargetHit(int targetIndex, Projectile projectile)
