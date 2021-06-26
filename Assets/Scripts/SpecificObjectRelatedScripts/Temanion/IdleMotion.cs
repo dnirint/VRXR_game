@@ -61,9 +61,12 @@ public class IdleMotion : MonoBehaviour
 
     private void DoOrbit()
     {
-        var orbitCenterVector = (isBossComponent)? BossController.Instance.boss.transform.forward : Vector3.up;
+        var orbitCenterTransform = (isBossComponent) ? BossController.Instance.boss.transform : orbitCenter;
+        var orbitCenterVector = orbitCenterTransform.forward;
         var directionFromCenter = transform.position - orbitCenter.position;
         orbitAxis = Vector3.Cross(orbitCenterVector.normalized, directionFromCenter.normalized).normalized;
+        Debug.DrawLine(transform.position, orbitCenterTransform.position, color: Color.yellow);
+        Debug.DrawRay(orbitCenterTransform.position, orbitCenterVector, color: Color.cyan);
         transform.RotateAround(orbitCenter.position, orbitCenterVector, orbitSpeed * Time.deltaTime);
     }
 
