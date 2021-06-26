@@ -42,6 +42,7 @@ public class AudioManager : MonoBehaviour
         playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
         playerAudioSource.clip = audioSource.clip;
         PlayAudio();
+        StartCoroutine(UpdateBPM());
     }
 
 
@@ -51,31 +52,45 @@ public class AudioManager : MonoBehaviour
 
         playerAudioSource.time = audioSource.time + timeDifferenceWithBeatDetector;
         //Debug.Log($"CURRENT BPM : {currentBPM}");
-        if (lastWindowUpdateTime + clipWindowUpdateCooldown < Time.time)
-        {
-            lastWindowUpdateTime = Time.time;
-            StartCoroutine(UpdateBPM());
-        }
     }
 
-    public float clipWindowSizeInSeconds = 7f;
-    public float clipWindowUpdateCooldown = 1f;
+    public float clipWindowSizeInSeconds = 30f;
+    //public float clipWindowUpdateCooldown = 1f;
     private float lastWindowUpdateTime = 0;
 
     IEnumerator UpdateBPM()
     {
-        var startTime = Time.time;
-        var curAudioTime = audioSource.time;
-        var curAudioClip = MakeSubclip(audioSource.clip, curAudioTime, curAudioTime + clipWindowSizeInSeconds);
-        var newBPM = UniBpmAnalyzer.AnalyzeBpm(curAudioClip);
-        currentBPM = newBPM;
-        currentBPS = 60f / currentBPM;
-        beatInterval = currentBPS;
-        beatCooldown = beatInterval / 4;
-        Debug.Log($"New BPM: {newBPM}");
-        var elapsed = Time.time - startTime;
-        yield return new WaitForSeconds(timeDifferenceWithBeatDetector - elapsed);
-        yield return null;
+        while (true)
+        {
+            float elapsed = 0;
+            if (audioSource.isPlaying)
+            {
+                var startTime = Time.time;
+                var startQuietAudioTime = audioSource.time;
+                var startPlayerAudioTime = playerAudioSource.time;
+                var endPlayerAudioTime = startPlayerAudioTime + clipWindowSizeInSeconds;
+                var curAudioClip = MakeSubclip(audioSource.clip, startQuietAudioTime, startQuietAudioTime + clipWindowSizeInSeconds);
+                var newBPM = UniBpmAnalyzer.AnalyzeBpm(curAudioClip);
+                currentBPM = newBPM;
+                currentBPS = 60f / currentBPM;
+                beatInterval = currentBPS;
+                beatCooldown = beatInterval / 4;
+                var curPlayerAudioTime = playerAudioSource.time;
+                var realDiff = endPlayerAudioTime - curPlayerAudioTime;
+                StartCoroutine(LogAfterSeconds(realDiff, $"New BPM: {newBPM} (calculation time: {realDiff})"));
+                yield return null;
+            }
+            
+        }
+        
+        //yield return new WaitForSeconds(timeDifferenceWithBeatDetector - elapsed);
+        //yield return null;
+    }
+
+    IEnumerator LogAfterSeconds(float seconds, string logMessage)
+    {
+        yield return new WaitForSeconds(seconds);
+        Debug.Log(logMessage);
     }
 
     private AudioClip MakeSubclip(AudioClip clip, float start, float stop)
