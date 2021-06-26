@@ -162,7 +162,11 @@ public class BossToPlayerInteractions : MonoBehaviour
         
         while (shouldSwitchTargets)
         {
-            SetNewTarget();
+            if (isAttacking)
+            {
+                SetNewTarget();
+            }
+            
             yield return new WaitForSeconds(timeBetweenSwitches);
         }
     }
