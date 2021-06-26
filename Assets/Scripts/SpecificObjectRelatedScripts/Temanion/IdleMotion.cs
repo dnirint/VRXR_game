@@ -75,13 +75,15 @@ public class IdleMotion : MonoBehaviour
         transform.RotateAround(transform.position, transform.forward, selfRotationSpeed * Time.deltaTime);
     }
 
+    private Vector3 startPosition;
     private void DoFloat()
     {
-        transform.position +=  floatDirection * (0.5f*Mathf.Sin(floatSpeed * Time.time)) * floatRangeFactor;
+        transform.position = startPosition + floatDirection * (0.5f*Mathf.Sin(floatSpeed * Time.time)) * floatRangeFactor;
     }
 
     private void Start()
     {
+        startPosition = transform.position;
         startingScale = transform.localScale;
     }
 
