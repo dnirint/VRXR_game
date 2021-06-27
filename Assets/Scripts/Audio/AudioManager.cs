@@ -77,7 +77,7 @@ public class AudioManager : MonoBehaviour
                 beatCooldown = beatInterval / 4;
                 var curPlayerAudioTime = playerAudioSource.time;
                 var realDiff = endPlayerAudioTime - curPlayerAudioTime;
-                StartCoroutine(LogAfterSeconds(realDiff, $"New BPM: {newBPM} (calculation time: {realDiff})"));
+                //StartCoroutine(LogAfterSeconds(realDiff, $"New BPM: {newBPM} (calculation time: {realDiff})"));
                 yield return null;
             }
             
