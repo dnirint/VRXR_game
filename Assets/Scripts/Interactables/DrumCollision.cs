@@ -22,7 +22,7 @@ public class DrumCollision : MonoBehaviour
         if (lastCollision + collisionCooldown < Time.time)
         {
             lastCollision = Time.time;
-            //PlayerTouchedDrum.Invoke();
+            PlayerTouchedDrum.Invoke();
             PlayerTouchedDrumVISUALIZE.Invoke();
         }
         else
