@@ -8,7 +8,7 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     public GameObject projectilePrefab;
     public GameObject[] bossTargets;
-    public List<List<GameObject>> bossTargetClusters;
+    public List<List<GameObject>> platformTargets;
     public Transform projectileParent;
 
     public bool isAttacking = true;
@@ -19,9 +19,23 @@ public class BossToPlayerInteractions : MonoBehaviour
     private float timeBetweenSwitches = 10;
     private bool shouldSwitchTargets = true;
     private int curTargetIndex = 0;
+    /*
+     * We have 3 platforms
+     *  each platform has 4 drums
+     *      each drum is a target
+     * 
+     * We need a list of plaforms and for each platform we will hold a list of targets
+     * List<List<GameObject>>  -> target pointers
+     * 
+     * For each target, we need to hold a queue of projectiles, so:
+     * List<List<Queue<GameObject>>> -> projectiles
+     * 
+     * HashSet<GameObject, Queue<Projectile>>
+     * 
+     */
 
-
-    private List<List<HashSet<Projectile>>> targetQueues;
+    //private List<List<HashSet<Projectile>>> targetQueues;
+    private Dictionary<GameObject, Queue<Projectile>> drumToProjectileQueue;
     // list of list of hashsets
 
     private void Awake()
@@ -45,10 +59,10 @@ public class BossToPlayerInteractions : MonoBehaviour
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
         AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
-        bossTargetClusters = new List<List<GameObject>>();
-        foreach (var target in bossTargets)
+        platformTargets = new List<List<GameObject>>();
+        foreach (var platform in bossTargets)
         {
-            bossTargetClusters.Add(target.GetComponent<PlatformTargets>().targetList);
+            platformTargets.Add(platform.GetComponent<PlatformTargets>().targetList);
         }
 
         SetTargetQueues();
@@ -56,21 +70,31 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     private void SetTargetQueues()
     {
-        targetQueues = new List<List<HashSet<Projectile>>>();
-        // for each group of drums
-        foreach (var cluster in bossTargetClusters)
-        {
-            List<HashSet<Projectile>> clusterList = new List<HashSet<Projectile>>();
-            // for each drum in the group
-            foreach (var target in cluster)
-            {
-                // create a hashset for that drums lane
-                clusterList.Add(new HashSet<Projectile>());
-            }
 
-            // Add the list of hash sets
-            targetQueues.Add(clusterList);
+        drumToProjectileQueue = new Dictionary<GameObject, Queue<Projectile>>();
+        foreach (var platform in platformTargets)
+        {
+            foreach (var target in platform)
+            {
+                drumToProjectileQueue[target] = new Queue<Projectile>();
+            }
         }
+
+        //targetQueues = new List<List<HashSet<Projectile>>>();
+        //// for each group of drums
+        //foreach (var cluster in platformTargets)
+        //{
+        //    List<HashSet<Projectile>> clusterList = new List<HashSet<Projectile>>();
+        //    // for each drum in the group
+        //    foreach (var target in cluster)
+        //    {
+        //        // create a hashset for that drums lane
+        //        clusterList.Add(new HashSet<Projectile>());
+        //    }
+
+        //    // Add the list of hash sets
+        //    targetQueues.Add(clusterList);
+        //}
     }
 
 
@@ -78,14 +102,14 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     GameObject GetSpecificTarget()
     {
-        var platform = bossTargetClusters[curTargetIndex];
+        var platform = platformTargets[curTargetIndex];
         int ind = (specificTargetInPlatformIndex++) % platform.Count;
         return platform[ind];
     }
 
     private int GetRandomTargetInCluster(int platformIndex)
     {
-        var platform = bossTargetClusters[platformIndex];
+        var platform = platformTargets[platformIndex];
         int totalweight = 0;
         int[] weights = new int[platform.Count];
         for (int i = 0; i < platform.Count; i++)
@@ -117,23 +141,8 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Update()
     {
         attackCooldown = AudioManager.Instance.currentBPS;
-//        if (isAttacking && lastAttackTime + attackCooldown < Time.time)
-//        //if (isAttacking)
-//        {
-//            lastAttackTime = Time.time;
-//            int startTargetIndex = curTargetIndex;
-//            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
-//            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
-//            Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
-//            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
-//            newProjectile.origin = boss.transform.position;
-//            newProjectile.targetGO = GetSpecificTarget();
-//            
-//            targetQueues[startTargetIndex].Add(newProjectile);
-//            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
-//        }
         AttackTarget();
-        foreach (var platform in bossTargetClusters)
+        foreach (var platform in platformTargets)
         {
             foreach (var target in platform)
             {
@@ -157,64 +166,39 @@ public class BossToPlayerInteractions : MonoBehaviour
             newProjectile.origin = boss.transform.position;
             int newTarget = GetRandomTargetInCluster(curTargetIndex);
             Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
-            newProjectile.targetGO = bossTargetClusters[startTargetIndex][newTarget];
-            targetQueues[startTargetIndex][newTarget].Add(newProjectile);
-            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newTarget, newProjectile); });
+            var targetGO = platformTargets[startTargetIndex][newTarget];
+            newProjectile.targetGO = targetGO;
+            drumToProjectileQueue[targetGO].Enqueue(newProjectile);
+            //targetQueues[startTargetIndex][newTarget].Add(newProjectile);
+            newProjectile.TargetHit.AddListener(() => { OnTargetHit(newProjectile); });
         }
     }
 
 
-    void OnTargetHit(int targetCluster, int targetDrumIndex, Projectile projectile)
+    void DestroyProjectileInQueue(GameObject target)
     {
-        targetQueues[targetCluster][targetDrumIndex].Remove(projectile);
-        Debug.Log($"Cluster {targetCluster} in target {targetDrumIndex} was hit!");
-        Destroy(projectile.gameObject);
+        if (drumToProjectileQueue[target].Count > 0)
+        {
+            var projectile = drumToProjectileQueue[target].Dequeue();
+            Destroy(projectile.gameObject);
+        }
+        else
+        {
+            // bzzt
+        }
+
+    }
+
+    void OnTargetHit(Projectile projectile)
+    {
+
+        DestroyProjectileInQueue(projectile.targetGO);
     }
 
     public void DestroyClosestProjectileOnSameLane(GameObject target)
     {
-        Debug.Log($"KILLING");
-        // In each Cluster
-        for (int i = 0; i < bossTargetClusters.Count; i++)
-        {
-            // In each drum of that cluster
-            for (int j = 0; j < bossTargetClusters[i].Count; j++)
-            {
-                // If the drum is indeed the target
-                if (bossTargetClusters[i][j] == target)
-                {
-                    Debug.Log($"Target {i} looking for closest projectile");
-                    // found the target that the player defended
-                    Projectile closestProjectile = FindClosestProjectile(i);
 
-                    if (closestProjectile != null)
-                    {
-                        Debug.Log($"Target found projectile!");
-                        targetQueues[i][j].Remove(closestProjectile);
-                        Destroy(closestProjectile.gameObject);
-                    }
-
-                    break;
-                }
-            }
-        }
-    }
-
-    private Projectile FindClosestProjectile(int targetIndex)
-    {
-        Projectile closestProjectile = null;
-        foreach (var hashSet in targetQueues[targetIndex])
-        {
-            foreach (var projectile in hashSet)
-            {
-                if (closestProjectile == null || projectile.distanceToTarget < closestProjectile.distanceToTarget)
-                {
-                    closestProjectile = projectile;
-                }
-            }
-        }
-
-        return closestProjectile;
+        DestroyProjectileInQueue(target);
     }
 
 
