@@ -34,6 +34,7 @@
           </e>
           <e p="ObjectScripts" t="Include">
             <e p="DrumScript.cs" t="Include" />
+            <e p="PlatformTargets.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
             <e p="PlayerController.cs" t="Include" />
@@ -41,6 +42,15 @@
             <e p="PlayerStartAnchorPosition.cs" t="Include" />
           </e>
           <e p="SimpleCameraController.cs" t="Include" />
+          <e p="SpecificObjectRelatedScripts" t="Include">
+            <e p="Temanion" t="Include">
+              <e p="IdleMotion.cs" t="Include" />
+            </e>
+            <e p="TemanionScript.cs" t="Include" />
+          </e>
+          <e p="Visualizers" t="Include">
+            <e p="DrumBeatVisualizer.cs" t="Include" />
+          </e>
         </e>
         <e p="TutorialInfo" t="Include">
           <e p="Scripts" t="Include">

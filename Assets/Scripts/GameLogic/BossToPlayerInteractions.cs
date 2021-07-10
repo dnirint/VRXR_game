@@ -19,7 +19,10 @@ public class BossToPlayerInteractions : MonoBehaviour
     private float timeBetweenSwitches = 10;
     private bool shouldSwitchTargets = true;
     private int curTargetIndex = 0;
-    private List<HashSet<Projectile>> targetQueues;
+
+
+    private List<List<HashSet<Projectile>>> targetQueues;
+    // list of list of hashsets
 
     private void Awake()
     {
@@ -37,7 +40,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Start()
     {
         lastAttackTime = Time.time;
-        
+
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
@@ -47,14 +50,32 @@ public class BossToPlayerInteractions : MonoBehaviour
         {
             bossTargetClusters.Add(target.GetComponent<PlatformTargets>().targetList);
         }
-        targetQueues = new List<HashSet<Projectile>>();
-        foreach (var target in bossTargets)
+
+        SetTargetQueues();
+    }
+
+    private void SetTargetQueues()
+    {
+        targetQueues = new List<List<HashSet<Projectile>>>();
+        // for each group of drums
+        foreach (var cluster in bossTargetClusters)
         {
-            targetQueues.Add(new HashSet<Projectile>());
+            List<HashSet<Projectile>> clusterList = new List<HashSet<Projectile>>();
+            // for each drum in the group
+            foreach (var target in cluster)
+            {
+                // create a hashset for that drums lane
+                clusterList.Add(new HashSet<Projectile>());
+            }
+
+            // Add the list of hash sets
+            targetQueues.Add(clusterList);
         }
     }
 
+
     private int specificTargetInPlatformIndex = 0;
+
     GameObject GetSpecificTarget()
     {
         var platform = bossTargetClusters[curTargetIndex];
@@ -62,34 +83,64 @@ public class BossToPlayerInteractions : MonoBehaviour
         return platform[ind];
     }
 
+    private int GetRandomTargetInCluster(int platformIndex)
+    {
+        var platform = bossTargetClusters[platformIndex];
+        int totalweight = 0;
+        int[] weights = new int[platform.Count];
+        for (int i = 0; i < platform.Count; i++)
+        {
+            var drum = platform[i].GetComponent<BattleDrum>();
+            if (drum != null)
+            {
+                int priority = drum.priority;
+                totalweight += priority;
+                weights[i] = priority;
+            }
+        }
+
+        float randomVal = Random.value;
+        float startVal = 0;
+        for (int i = 0; i < platform.Count; i++)
+        {
+            startVal += (float) weights[i] / totalweight;
+            if (startVal >= randomVal)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+
     void Update()
     {
         attackCooldown = AudioManager.Instance.currentBPS;
-        if (isAttacking && lastAttackTime + attackCooldown < Time.time)
-        //if (isAttacking)
-        {
-            lastAttackTime = Time.time;
-            int startTargetIndex = curTargetIndex;
-            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
-            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
-            Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
-            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
-            newProjectile.origin = boss.transform.position;
-            newProjectile.targetGO = GetSpecificTarget();
-            targetQueues[startTargetIndex].Add(newProjectile);
-            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
-        }
+//        if (isAttacking && lastAttackTime + attackCooldown < Time.time)
+//        //if (isAttacking)
+//        {
+//            lastAttackTime = Time.time;
+//            int startTargetIndex = curTargetIndex;
+//            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
+//            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
+//            Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
+//            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
+//            newProjectile.origin = boss.transform.position;
+//            newProjectile.targetGO = GetSpecificTarget();
+//            
+//            targetQueues[startTargetIndex].Add(newProjectile);
+//            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
+//        }
+        AttackTarget();
         foreach (var platform in bossTargetClusters)
         {
             foreach (var target in platform)
             {
                 Debug.DrawLine(boss.transform.position, target.transform.position);
             }
-            
         }
-
     }
-
 
 
     void AttackTarget()
@@ -104,40 +155,47 @@ public class BossToPlayerInteractions : MonoBehaviour
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
             newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
-            newProjectile.targetGO = bossTargets[curTargetIndex];
-            targetQueues[startTargetIndex].Add(newProjectile);
-            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newProjectile); });
+            int newTarget = GetRandomTargetInCluster(curTargetIndex);
+            Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
+            newProjectile.targetGO = bossTargetClusters[startTargetIndex][newTarget];
+            targetQueues[startTargetIndex][newTarget].Add(newProjectile);
+            newProjectile.TargetHit.AddListener(() => { OnTargetHit(startTargetIndex, newTarget, newProjectile); });
         }
-
     }
 
 
-
-    void OnTargetHit(int targetIndex, Projectile projectile)
+    void OnTargetHit(int targetCluster, int targetDrumIndex, Projectile projectile)
     {
-        targetQueues[targetIndex].Remove(projectile);
-        Debug.Log($"Target {targetIndex} was hit!");
+        targetQueues[targetCluster][targetDrumIndex].Remove(projectile);
+        Debug.Log($"Cluster {targetCluster} in target {targetDrumIndex} was hit!");
         Destroy(projectile.gameObject);
     }
 
     public void DestroyClosestProjectileOnSameLane(GameObject target)
     {
         Debug.Log($"KILLING");
-        for (int i=0; i<bossTargets.Length; i++)
+        // In each Cluster
+        for (int i = 0; i < bossTargetClusters.Count; i++)
         {
-            if (bossTargets[i] == target)
+            // In each drum of that cluster
+            for (int j = 0; j < bossTargetClusters[i].Count; j++)
             {
-                Debug.Log($"Target {i} looking for closest projectile");
-                // found the target that the player defended
-                Projectile closestProjectile = FindClosestProjectile(i);
-                
-                if (closestProjectile != null)
+                // If the drum is indeed the target
+                if (bossTargetClusters[i][j] == target)
                 {
-                    Debug.Log($"Target found projectile!");
-                    targetQueues[i].Remove(closestProjectile);
-                    Destroy(closestProjectile.gameObject);
+                    Debug.Log($"Target {i} looking for closest projectile");
+                    // found the target that the player defended
+                    Projectile closestProjectile = FindClosestProjectile(i);
+
+                    if (closestProjectile != null)
+                    {
+                        Debug.Log($"Target found projectile!");
+                        targetQueues[i][j].Remove(closestProjectile);
+                        Destroy(closestProjectile.gameObject);
+                    }
+
+                    break;
                 }
-                break;
             }
         }
     }
@@ -145,41 +203,43 @@ public class BossToPlayerInteractions : MonoBehaviour
     private Projectile FindClosestProjectile(int targetIndex)
     {
         Projectile closestProjectile = null;
-        foreach (Projectile projectile in targetQueues[targetIndex])
+        foreach (var hashSet in targetQueues[targetIndex])
         {
-            if (closestProjectile == null || projectile.distanceToTarget < closestProjectile.distanceToTarget)
+            foreach (var projectile in hashSet)
             {
-                closestProjectile = projectile;
+                if (closestProjectile == null || projectile.distanceToTarget < closestProjectile.distanceToTarget)
+                {
+                    closestProjectile = projectile;
+                }
             }
         }
+
         return closestProjectile;
     }
 
 
-
     IEnumerator SwitchTargets()
     {
-        
         while (shouldSwitchTargets)
         {
             if (isAttacking)
             {
-                SetNewTarget();
+                SetNewPlatform();
             }
-            
+
             yield return new WaitForSeconds(timeBetweenSwitches);
         }
     }
 
-    void SetNewTarget()
+    void SetNewPlatform()
     {
         int new_target_index = Random.Range(0, bossTargets.Length);
         while (curTargetIndex == new_target_index)
         {
             new_target_index = Random.Range(0, bossTargets.Length);
         }
+
         curTargetIndex = new_target_index;
         specificTargetInPlatformIndex = 0;
-
     }
 }
