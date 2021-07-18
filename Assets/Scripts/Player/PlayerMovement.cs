@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public UnityEvent TeleportStart;
+    public UnityEvent TeleportMidway;
+    private bool alreadySignaledMidway = false;
+    public UnityEvent TeleportEnd;
     public float teleportSpeed = 2f;
     private Vector3 teleportMoveDirection;
     public Transform playerTransform { get; private set; }
@@ -42,11 +47,15 @@ public class PlayerMovement : MonoBehaviour
             teleportMoveDirection = target.position - playerTransform.position;
             initialDistanceToTarget = teleportMoveDirection.magnitude;
             isTeleporting = true;
+            alreadySignaledMidway = false;
+            TeleportStart.Invoke();
         }
     }
 
+
     private void Update()
     {
+        
         if (isTeleporting)
         {
             float distToTarget = Vector3.Distance(playerTransform.position, teleportTargetTransform.position);
@@ -55,10 +64,16 @@ public class PlayerMovement : MonoBehaviour
                 playerTransform.position = teleportTargetTransform.position;
 
                 isTeleporting = false;
+                TeleportEnd.Invoke();
             }
             else
             {
                 float pathFraction = (Mathf.Abs(distToTarget - MOVE_START_EPS)) / initialDistanceToTarget;
+                if (!alreadySignaledMidway && pathFraction >= 0.49)
+                {
+                    TeleportMidway.Invoke();
+                    alreadySignaledMidway = true;
+                }
                 float speedModifier = 2 * Mathf.Sin(3 * pathFraction) + 0.3f;
                 playerTransform.position += teleportMoveDirection * teleportSpeed * speedModifier * Time.deltaTime;
             }

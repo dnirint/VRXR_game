@@ -16,7 +16,7 @@ public class TeleportationDrum : MonoBehaviour
         }
     }
 
-    private void TeleportOnCollision()
+    public void TeleportOnCollision()
     {
         if (teleportTargetTransform != null)
         {

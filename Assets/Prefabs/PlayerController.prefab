@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6255673207090011050}
   - component: {fileID: 6255673207090011051}
   - component: {fileID: 6255673207090011048}
+  - component: {fileID: 5676206237975964357}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerCamera: {fileID: 0}
 --- !u!114 &6255673207090011051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,3 +77,15 @@ MonoBehaviour:
   playerController: {fileID: 6255673207090011050}
   teleportAnchors:
   - {fileID: 0}
+--- !u!114 &5676206237975964357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255673207090011046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b566e9508415c64a80644f4f629544b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
