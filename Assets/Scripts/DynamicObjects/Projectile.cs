@@ -16,6 +16,7 @@ public class Projectile : MonoBehaviour
     public UnityEvent OnTimeout;
 
     public float distanceToTarget { get; private set; }
+
     void Start()
     {
         Debug.Log($"New projectile with {timeToTarget}");
@@ -33,9 +34,9 @@ public class Projectile : MonoBehaviour
     void OnTimeoutReached()
     {
         Debug.Log($"TIMEOUT!!");
+
         Destroy(gameObject);
     }
-
     //    
     //    void Update()
     //    {
@@ -83,14 +84,21 @@ public class Projectile : MonoBehaviour
             {
                 onTargetHit.Invoke();
             }
+
             yield return null;
         }
+
         if (onTimeout != null)
         {
             onTimeout.Invoke();
         }
-
     }
 
     #endregion
+
+    private void OnDestroy()
+    {
+        OnTimeout.RemoveAllListeners();
+        TargetHit.RemoveAllListeners();
+    }
 }

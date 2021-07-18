@@ -12,7 +12,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     public Transform projectileParent;
 
     public bool isAttacking = true;
-    public float attackCooldown = 5f;
+    public float attackCooldown = 0.25f;
     private float lastAttackTime = 0f;
     private GameObject boss;
 
@@ -54,11 +54,12 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Start()
     {
         lastAttackTime = Time.time;
-
+        
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
         AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+//        SongController.Instance.OnBeatDetected.AddListener(AttackTarget);
         platformTargets = new List<List<GameObject>>();
         foreach (var platform in bossTargets)
         {
@@ -140,8 +141,9 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void Update()
     {
-        attackCooldown = AudioManager.Instance.currentBPS;
-        AttackTarget();
+//        attackCooldown = AudioManager.Instance.currentBPS;
+//        AttackTarget();
+        
         foreach (var platform in platformTargets)
         {
             foreach (var target in platform)
@@ -155,8 +157,8 @@ public class BossToPlayerInteractions : MonoBehaviour
     void AttackTarget()
     {
         if (isAttacking && lastAttackTime + attackCooldown < Time.time)
-            //if (isAttacking)
-        {
+//            if (isAttacking)
+        { 
             lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
             Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
@@ -180,6 +182,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         if (drumToProjectileQueue[target].Count > 0)
         {
             var projectile = drumToProjectileQueue[target].Dequeue();
+            
             Destroy(projectile.gameObject);
         }
         else
