@@ -228,8 +228,6 @@ public class AudioManager : MonoBehaviour
         OnBeatEnd.Invoke();
         isInsideInterval = false;
         Debug.Log($"BEAT_END");
-       
-
     }
 
 

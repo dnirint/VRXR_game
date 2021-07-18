@@ -54,7 +54,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Start()
     {
         lastAttackTime = Time.time;
-        
+        attackCooldown = 0.25f;
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());

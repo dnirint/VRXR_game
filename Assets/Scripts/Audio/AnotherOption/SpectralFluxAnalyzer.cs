@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpectralFluxAnalyzer : MonoBehaviour
+public class SpectralFluxAnalyzer
 {
     int numSamples = 1024;
 
@@ -10,7 +10,7 @@ public class SpectralFluxAnalyzer : MonoBehaviour
     private int UpperHistogramBucket = 4;
 	// Sensitivity multiplier to scale the average threshold.
 	// In this case, if a rectified spectral flux sample is > 1.5 times the average, it is a peak
-	float thresholdMultiplier = 5.0f;
+	float thresholdMultiplier = 1.5f;
 
 	// Number of samples to average in our window
 	int thresholdWindowSize = 15;
