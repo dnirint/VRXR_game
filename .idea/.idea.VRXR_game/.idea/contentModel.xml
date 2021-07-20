@@ -106,6 +106,7 @@
             <e p="DrumCollision.cs" t="Include" />
             <e p="DrumInteractionController.cs" t="Include" />
             <e p="DrumInteractionVisualization.cs" t="Include" />
+            <e p="DrumStickHitDetection.cs" t="Include" />
             <e p="TeleportationDrum.cs" t="Include" />
           </e>
           <e p="ObjectScripts" t="Include">

@@ -72,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
                 if (!alreadySignaledMidway && pathFraction >= 0.49)
                 {
                     TeleportMidway.Invoke();
+                    Debug.Log("Passed halfway teleport point");
                     alreadySignaledMidway = true;
                 }
                 float speedModifier = 2 * Mathf.Sin(3 * pathFraction) + 0.3f;

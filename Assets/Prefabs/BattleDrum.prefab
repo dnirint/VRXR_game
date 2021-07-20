@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 1645347922531521598}
   m_Layer: 0
   m_Name: BattleDrum
-  m_TagString: Untagged
+  m_TagString: drum
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d327b0de043bcce418b0016516f8d8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  priority: 0
 --- !u!114 &1982774299793379041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +351,7 @@ GameObject:
   - component: {fileID: 1878825473595390659}
   m_Layer: 0
   m_Name: DrumTop
-  m_TagString: Untagged
+  m_TagString: drum
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

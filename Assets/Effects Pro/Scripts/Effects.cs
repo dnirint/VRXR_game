@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum Fx {greyscale, sepia, negative};
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 [RequireComponent(typeof (Camera))]
 public class Effects : MonoBehaviour {
 
