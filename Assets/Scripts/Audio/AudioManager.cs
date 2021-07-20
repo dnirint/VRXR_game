@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     public AudioMixer audioMixer;
     public static AudioManager Instance { get; private set; } = null;
 
+    public int hardCodedBPM = 92;
     
     
     public bool realTimeAnalysis = true;
@@ -45,7 +46,7 @@ public class AudioManager : MonoBehaviour
         currentBPM = getBPM();
         currentBPS = 60f / currentBPM;
         
-        Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {beatInterval} seconds per beat.");
+        Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {currentBPS} seconds per beat.");
         setVolumeForAnalysisMusic(-80);
         //_audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
         playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();

@@ -13,7 +13,7 @@ public class SpectralFluxAnalyzer
 	float thresholdMultiplier = 1.5f;
 
 	// Number of samples to average in our window
-	int thresholdWindowSize = 15;
+	int thresholdWindowSize = 30;
 
 	public List<SpectralFluxInfo> spectralFluxSamples;
 
