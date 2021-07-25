@@ -161,13 +161,13 @@ public class BossToPlayerInteractions : MonoBehaviour
         { 
             lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
-            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
+//            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
             var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
             newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
             int newTarget = GetRandomTargetInCluster(curTargetIndex);
-            Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
+//            Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
             var targetGO = platformTargets[startTargetIndex][newTarget];
             newProjectile.targetGO = targetGO;
             drumToProjectileQueue[targetGO].Enqueue(newProjectile);

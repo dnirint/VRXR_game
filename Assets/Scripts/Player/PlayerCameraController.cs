@@ -28,7 +28,7 @@ public class PlayerCameraController : MonoBehaviour
         cameraVisualEffects.effectType = (isNegativeColor) ? Fx.greyscale : Fx.negative;
         
     }
-
+    
     private void OnTeleportEnd()
     {
 

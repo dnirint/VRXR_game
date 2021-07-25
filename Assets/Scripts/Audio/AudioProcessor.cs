@@ -216,7 +216,7 @@ public class AudioProcessor : MonoBehaviour
 				//tapTempo();
 				// make sure the most recent beat wasn't too recently
 				if (sinceLast > tempopd / 4) {
-					Debug.Log("Beat Detected");
+//					Debug.Log("Beat Detected");
 					onBeat.Invoke ();			
 					blipDelay [0] = 1;
 					// record that we did actually mark a beat this frame
