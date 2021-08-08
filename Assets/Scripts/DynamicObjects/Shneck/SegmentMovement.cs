@@ -17,10 +17,16 @@ public class SegmentMovement : MonoBehaviour
     void Start()
     {
 
+
+
+    }
+
+    public void LocalizeAndStartMoving()
+    {
         lastDist = distOffset;
         transform.position = pathCreator.path.GetPointAtDistance(lastDist);
         transform.rotation = pathCreator.path.GetRotationAtDistance(lastDist);
-
+        StartMoving();
     }
 
     public void StartMoving()
