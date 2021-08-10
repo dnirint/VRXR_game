@@ -36,20 +36,29 @@ public class ShneckMovement : MonoBehaviour
     void BuildSnek()
     {
         var headMovement = head.GetComponent<SegmentMovement>();
+        var tailMovement = tail.GetComponent <SegmentMovement>();
         headMovement.snekSpeed = snekSpeed;
         headMovement.distOffset = 0;
         headMovement.pathCreator = pathCreator;
         snekSegments.Add(headMovement);
+        float totalDistOffset = 0;
         for (int i=1; i<=bodySegmentCount; i++) // start from 1 so that the first segment won't collide with the head
         {
             var segGo = Instantiate(bodySegmentPrefab, bodyParent.transform);
             var segMove = segGo.GetComponent<SegmentMovement>();
             segMove.snekSpeed = snekSpeed;
-            segMove.distOffset = -i * bodySegmentDistance;
+            totalDistOffset = -i * bodySegmentDistance;
+            Debug.Log($"-- {totalDistOffset}");
+            segMove.distOffset = totalDistOffset;
             segMove.pathCreator = pathCreator;
             snekSegments.Add(segMove);
             bodySegments.Add(segGo);
         }
+        totalDistOffset -= bodySegmentDistance;
+        tailMovement.distOffset = totalDistOffset;
+        Debug.Log($"--> {totalDistOffset}");
+        tailMovement.snekSpeed = snekSpeed;
+        snekSegments.Add(tailMovement);
         StartSnek();
 
     }
@@ -58,7 +67,7 @@ public class ShneckMovement : MonoBehaviour
     {
         foreach (var segment in snekSegments)
         {
-            segment.StartMoving();
+            segment.LocalizeAndStartMoving();
         }
     }
 
