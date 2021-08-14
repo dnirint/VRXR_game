@@ -5,16 +5,16 @@ using UnityEngine.Events;
 
 public class TimeSignatureController : MonoBehaviour
 {
-    public AudioSource audioSource;
-    public AudioSource playerAudioSource;
 
-    public UnityEvent CriticalBeat;
-    public UnityEvent BarEnd;
-    public UnityEvent Beat;
+    private AudioClip audioClip;
+
+    public UnityEvent CriticalBeatStart;
+    public UnityEvent CriticalBeatEnd;
+    public UnityEvent BeatStart;
+    public UnityEvent BeatEnd;
 
     public float averageBPM;
     public float averageBPS;
-    public float audioPlayerTimeOffset = 0.05f;
     public static TimeSignatureController Instance = null;
 
     private void Awake()
@@ -26,9 +26,7 @@ public class TimeSignatureController : MonoBehaviour
     }
     void Start()
     {
-        playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
-        audioSource = GetComponent<AudioSource>();
-        playerAudioSource.clip = audioSource.clip;
+        audioClip = PlayerAudio.Instance.audioClip;
         StartCoroutine(PreprocessAndStartMusic());
     }
 
@@ -43,7 +41,7 @@ public class TimeSignatureController : MonoBehaviour
     IEnumerator PreprocessAndStartMusic()
     {
         float preprocessStartTime = Time.time;
-        averageBPM = UniBpmAnalyzer.AnalyzeBpm(audioSource.clip);
+        averageBPM = UniBpmAnalyzer.AnalyzeBpm(audioClip);
         //averageBPM = 120;
         if (averageBPM > 100)
         {
@@ -59,7 +57,7 @@ public class TimeSignatureController : MonoBehaviour
 
         StartCoroutine(StartTrackAndTrackSignature());
         //yield return new WaitForSeconds(audioPlayerTimeOffset);
-        playerAudioSource.Play();
+        PlayerAudio.Instance.StartAudibleMusic();
 
         yield return null;
     }
@@ -69,8 +67,10 @@ public class TimeSignatureController : MonoBehaviour
     public int beatsPerBar = 3;
     public float nextBeatTime;
     public int beatCounter = 0;
-    public int criticalBeatNumber = 0;
+    public int criticalBeatNumber = 1;
     public float timeBetweenBeats = 0;
+    public float beatDurationForPlayer = 0.05f;
+    public float nextBeatDurationForPlayer = float.PositiveInfinity;
     IEnumerator StartTrackAndTrackSignature()
     {
         isTrackingTimeSignature = true;
@@ -79,18 +79,31 @@ public class TimeSignatureController : MonoBehaviour
         timeBetweenBeats = 1 / averageBPS;
         while (isTrackingTimeSignature)
         {
+            if (Time.time >= nextBeatDurationForPlayer)
+            {
+                if (beatCounter == criticalBeatNumber)
+                {
+                    CriticalBeatStart.Invoke();
+                }
+                else
+                {
+                    BeatStart.Invoke();
+                }
+                nextBeatDurationForPlayer = float.PositiveInfinity;
+            }
             if (Time.time >= nextBeatTime)
             {
                 if (beatCounter == criticalBeatNumber)
                 {
-                    CriticalBeat.Invoke();
+                    CriticalBeatEnd.Invoke();
                 }
                 else
                 {
-                    Beat.Invoke();
+                    BeatEnd.Invoke();
                 }
                 beatCounter = (beatCounter + 1) % beatsPerBar;
                 nextBeatTime += timeBetweenBeats;
+                nextBeatDurationForPlayer += nextBeatTime - nextBeatDurationForPlayer;
             }
             yield return null;
             
@@ -98,28 +111,4 @@ public class TimeSignatureController : MonoBehaviour
         yield return null;
     }
 
-    //IEnumerator UpdateBPM()
-    //{
-    //    while (true)
-    //    {
-    //        float elapsed = 0;
-    //        if (audioSource.isPlaying)
-    //        {
-    //            var startTime = Time.time;
-    //            var startQuietAudioTime = audioSource.time;
-    //            var startPlayerAudioTime = playerAudioSource.time;
-    //            var endPlayerAudioTime = startPlayerAudioTime + clipWindowSizeInSeconds;
-    //            var curAudioClip = MakeSubclip(audioSource.clip, startQuietAudioTime, startQuietAudioTime + clipWindowSizeInSeconds);
-    //            var newBPM = UniBpmAnalyzer.AnalyzeBpm(curAudioClip);
-    //            currentBPM = newBPM;
-    //            currentBPS = 60f / currentBPM;
-    //            beatInterval = currentBPS;
-    //            beatCooldown = beatInterval / 4;
-    //            var curPlayerAudioTime = playerAudioSource.time;
-    //            var realDiff = endPlayerAudioTime - curPlayerAudioTime;
-    //            //StartCoroutine(LogAfterSeconds(realDiff, $"New BPM: {newBPM} (calculation time: {realDiff})"));
-    //            yield return null;
-    //        }
-
-    //    }
 }

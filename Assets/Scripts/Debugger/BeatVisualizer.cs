@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Audio;
 
 
 public class BeatVisualizer : MonoBehaviour
@@ -12,23 +13,27 @@ public class BeatVisualizer : MonoBehaviour
     private float turnOffTime = 0f;
     private Material selfMat;
     private bool isOn;
-
     public static BeatVisualizer Instance = null;
 
+    private float beatTime;
+    private Vector3 initialScale;
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
+
     }
 
     private void Start()
     {
+        initialScale = transform.localScale;
         selfMat = GetComponent<Renderer>().material;
         TurnOff();
-        TimeSignatureController.Instance.Beat.AddListener(TurnOnBeat);
-        TimeSignatureController.Instance.CriticalBeat.AddListener(TurnOnBarStart);
+        beatTime = TimeSignatureController.Instance.beatDurationForPlayer;
+        TimeSignatureController.Instance.BeatEnd.AddListener(TurnOnBeat);
+        TimeSignatureController.Instance.CriticalBeatEnd.AddListener(TurnOnBarStart);
     }
 
     void Update()
@@ -37,14 +42,17 @@ public class BeatVisualizer : MonoBehaviour
         {
             TurnOff();
         }
+
     }
     public void TurnOnBeat()
     {
         if (visualizeBeats)
         {
             selfMat.color = Color.white;
+            transform.localScale = initialScale * 0.9f;
             isOn = true;
-            turnOffTime = Time.time + turnOffAfterSeconds;
+            turnOffTime = Time.time + TimeSignatureController.Instance.timeBetweenBeats * 0.7f; ;
+            
         }
 
     }
@@ -54,8 +62,9 @@ public class BeatVisualizer : MonoBehaviour
         if (visualizeBarStart)
         {
             selfMat.color = Color.red;
+            transform.localScale = initialScale * 0.9f;
             isOn = true;
-            turnOffTime = Time.time + turnOffAfterSeconds;
+            turnOffTime = Time.time + TimeSignatureController.Instance.timeBetweenBeats * 0.7f; ;
         }
 
     }
@@ -63,6 +72,7 @@ public class BeatVisualizer : MonoBehaviour
     public void TurnOff()
     {   
         selfMat.color = Color.black;
+        transform.localScale = initialScale;
         isOn = false;
     }
 }
