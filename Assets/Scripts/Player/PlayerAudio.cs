@@ -93,6 +93,7 @@ public class PlayerAudio : MonoBehaviour
     private void UnpoopBeat()
     {
         shouldUnpoop = false;
+        shouldPoopNextBeat = true;
         SetFilterParams();
     }
 

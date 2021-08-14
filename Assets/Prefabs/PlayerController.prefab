@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6255673207090011048}
   - component: {fileID: 5676206237975964357}
   - component: {fileID: 4957364743006091314}
+  - component: {fileID: 7039130324176573309}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -111,5 +112,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0e0849301399544cb2b510d89738c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 0}
+  lowAudioSource: {fileID: 0}
+  lowPassFilter: {fileID: 0}
+  highAudioSource: {fileID: 0}
+  highPassFilter: {fileID: 0}
+  FILTER_COMMON_AGREED_THRESHOLD: 3000
+  POOP_HIGH_PASS_THRESHOLD: 3000
+  POOP_LOW_PASS_THRESHOLD: 200
+  shouldPoopNextBeat: 1
+--- !u!114 &7039130324176573309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255673207090011046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1518285811a12b41a36bb2cfe721810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -37,7 +37,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     //private List<List<HashSet<Projectile>>> targetQueues;
     private Dictionary<GameObject, Queue<Projectile>> drumToProjectileQueue;
     // list of list of hashsets
-
+    private Queue<GameObject> nextTargetQueue;
     private void Awake()
     {
         if (Instance == null)
@@ -59,6 +59,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
         AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+        nextTargetQueue = new Queue<GameObject>();
         platformTargets = new List<List<GameObject>>();
         foreach (var platform in bossTargets)
         {
@@ -79,22 +80,6 @@ public class BossToPlayerInteractions : MonoBehaviour
                 drumToProjectileQueue[target] = new Queue<Projectile>();
             }
         }
-
-        //targetQueues = new List<List<HashSet<Projectile>>>();
-        //// for each group of drums
-        //foreach (var cluster in platformTargets)
-        //{
-        //    List<HashSet<Projectile>> clusterList = new List<HashSet<Projectile>>();
-        //    // for each drum in the group
-        //    foreach (var target in cluster)
-        //    {
-        //        // create a hashset for that drums lane
-        //        clusterList.Add(new HashSet<Projectile>());
-        //    }
-
-        //    // Add the list of hash sets
-        //    targetQueues.Add(clusterList);
-        //}
     }
 
 
@@ -171,6 +156,7 @@ public class BossToPlayerInteractions : MonoBehaviour
             drumToProjectileQueue[targetGO].Enqueue(newProjectile);
             //targetQueues[startTargetIndex][newTarget].Add(newProjectile);
             newProjectile.TargetHit.AddListener(() => { OnTargetHit(newProjectile); });
+            nextTargetQueue.Enqueue(targetGO);
         }
     }
 
@@ -181,6 +167,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         {
             var projectile = drumToProjectileQueue[target].Dequeue();
             Destroy(projectile.gameObject);
+            nextTargetQueue.Dequeue();
         }
         else
         {
@@ -197,9 +184,15 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     public void DestroyClosestProjectileOnSameLane(GameObject target)
     {
-
+        if (nextTargetQueue.Count > 0 && nextTargetQueue.Peek() != target)
+        {
+            return;
+        }
+        // check distance from target
         DestroyProjectileInQueue(target);
+        PlayerAudio.Instance.shouldPoopNextBeat = false;
     }
+
 
 
     IEnumerator SwitchTargets()
