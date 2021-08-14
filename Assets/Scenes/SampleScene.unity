@@ -747,9 +747,6 @@ MonoBehaviour:
   CriticalBeatEnd:
     m_PersistentCalls:
       m_Calls: []
-  BarEnd:
-    m_PersistentCalls:
-      m_Calls: []
   BeatStart:
     m_PersistentCalls:
       m_Calls: []
@@ -758,13 +755,14 @@ MonoBehaviour:
       m_Calls: []
   averageBPM: 172
   averageBPS: 0
-  beatStartToEndTime: 0.05
   isTrackingTimeSignature: 0
   beatsPerBar: 4
   nextBeatTime: 0
   beatCounter: 0
   criticalBeatNumber: 1
   timeBetweenBeats: 0
+  beatDurationForPlayer: 0.05
+  nextBeatDurationForPlayer: Infinity
 --- !u!1 &910395397
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,6 +2347,10 @@ PrefabInstance:
     - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: isAttacking
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220407725350938979, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
+      propertyPath: attackCooldown
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}

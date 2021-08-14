@@ -12,7 +12,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     public Transform projectileParent;
 
     public bool isAttacking = true;
-    public float attackCooldown = 5f;
+    public float attackCooldown = 0.5f;
     private float lastAttackTime = 0f;
     private GameObject boss;
 
@@ -58,7 +58,6 @@ public class BossToPlayerInteractions : MonoBehaviour
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
-        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
         nextTargetQueue = new Queue<GameObject>();
         platformTargets = new List<List<GameObject>>();
         foreach (var platform in bossTargets)
@@ -67,6 +66,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
 
         SetTargetQueues();
+        TimeSignatureController.Instance.CriticalBeatEnd.AddListener(AttackTarget);
     }
 
     private void SetTargetQueues()
@@ -125,8 +125,7 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void Update()
     {
-        attackCooldown = AudioManager.Instance.currentBPS;
-        AttackTarget();
+        //attackCooldown = TimeSignatureController.Instance.averageBPS;
         foreach (var platform in platformTargets)
         {
             foreach (var target in platform)
@@ -136,7 +135,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
     }
 
-
+    public float projectileFlightTime = 3f;
     void AttackTarget()
     {
         if (isAttacking && lastAttackTime + attackCooldown < Time.time)
@@ -147,7 +146,7 @@ public class BossToPlayerInteractions : MonoBehaviour
             Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
             var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
-            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
+            newProjectile.timeToTarget = projectileFlightTime;
             newProjectile.origin = boss.transform.position;
             int newTarget = GetRandomTargetInCluster(curTargetIndex);
             Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
