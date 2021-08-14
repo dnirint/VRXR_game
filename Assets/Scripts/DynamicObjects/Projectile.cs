@@ -93,4 +93,10 @@ public class Projectile : MonoBehaviour
     }
 
     #endregion
+
+    private void OnDestroy()
+    {
+        OnTimeout.RemoveAllListeners();
+        TargetHit.RemoveAllListeners();
+    }
 }
