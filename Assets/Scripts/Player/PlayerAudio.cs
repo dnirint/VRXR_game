@@ -60,13 +60,11 @@ public class PlayerAudio : MonoBehaviour
         SetPlayerClip(audioClip);
         SetFilterParams();
         beatDuration = TimeSignatureController.Instance.timeBetweenBeats / 2;
-        //TimeSignatureController.Instance.BeatStart.AddListener(PoopBeat);
-        TimeSignatureController.Instance.CriticalBeatStart.AddListener(PoopBeat);
+        TimeSignatureController.Instance.CriticalBeatEnd.AddListener(PoopBeat);
     }
 
     private float beatDuration;
     public bool shouldPoopNextBeat = true;
-    private float nextPoopTime;
     private bool shouldUnpoop = true;
     private float nextUnpoopTime;
 

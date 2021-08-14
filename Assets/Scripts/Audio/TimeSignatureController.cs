@@ -10,13 +10,11 @@ public class TimeSignatureController : MonoBehaviour
 
     public UnityEvent CriticalBeatStart;
     public UnityEvent CriticalBeatEnd;
-    public UnityEvent BarEnd;
     public UnityEvent BeatStart;
     public UnityEvent BeatEnd;
 
     public float averageBPM;
     public float averageBPS;
-    public float beatStartToEndTime = 0.05f;
     public static TimeSignatureController Instance = null;
 
     private void Awake()
@@ -71,6 +69,8 @@ public class TimeSignatureController : MonoBehaviour
     public int beatCounter = 0;
     public int criticalBeatNumber = 1;
     public float timeBetweenBeats = 0;
+    public float beatDurationForPlayer = 0.05f;
+    public float nextBeatDurationForPlayer = float.PositiveInfinity;
     IEnumerator StartTrackAndTrackSignature()
     {
         isTrackingTimeSignature = true;
@@ -79,7 +79,7 @@ public class TimeSignatureController : MonoBehaviour
         timeBetweenBeats = 1 / averageBPS;
         while (isTrackingTimeSignature)
         {
-            if (Time.time >= nextBeatTime)
+            if (Time.time >= nextBeatDurationForPlayer)
             {
                 if (beatCounter == criticalBeatNumber)
                 {
@@ -89,8 +89,21 @@ public class TimeSignatureController : MonoBehaviour
                 {
                     BeatStart.Invoke();
                 }
+                nextBeatDurationForPlayer = float.PositiveInfinity;
+            }
+            if (Time.time >= nextBeatTime)
+            {
+                if (beatCounter == criticalBeatNumber)
+                {
+                    CriticalBeatEnd.Invoke();
+                }
+                else
+                {
+                    BeatEnd.Invoke();
+                }
                 beatCounter = (beatCounter + 1) % beatsPerBar;
                 nextBeatTime += timeBetweenBeats;
+                nextBeatDurationForPlayer += nextBeatTime - nextBeatDurationForPlayer;
             }
             yield return null;
             

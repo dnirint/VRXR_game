@@ -31,9 +31,9 @@ public class BeatVisualizer : MonoBehaviour
         initialScale = transform.localScale;
         selfMat = GetComponent<Renderer>().material;
         TurnOff();
-        beatTime = TimeSignatureController.Instance.beatStartToEndTime;
-        TimeSignatureController.Instance.BeatStart.AddListener(TurnOnBeat);
-        TimeSignatureController.Instance.CriticalBeatStart.AddListener(TurnOnBarStart);
+        beatTime = TimeSignatureController.Instance.beatDurationForPlayer;
+        TimeSignatureController.Instance.BeatEnd.AddListener(TurnOnBeat);
+        TimeSignatureController.Instance.CriticalBeatEnd.AddListener(TurnOnBarStart);
     }
 
     void Update()
