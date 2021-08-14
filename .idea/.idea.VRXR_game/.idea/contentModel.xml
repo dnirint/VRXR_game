@@ -7,10 +7,85 @@
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="Debugger" t="Include">
+            <e p="BeatVisualizer.cs" t="Include" />
+            <e p="DebugDisplay.cs" t="Include" />
+            <e p="DebuggerScript.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Effects Pro" t="Include">
+          <e p="Demo" t="Include">
+            <e p="Demo.cs" t="Include" />
+          </e>
+          <e p="Readme.txt" t="Include" />
+          <e p="Scripts" t="Include">
+            <e p="Effects.cs" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="Contrast&amp;Brightness.shader" t="Include" />
+            <e p="Greyscale.shader" t="Include" />
+            <e p="Negative.shader" t="Include" />
+            <e p="Sepia.shader" t="Include" />
+          </e>
+          <e p="Textures" t="Include">
+            <e p="License.txt" t="Include" />
+          </e>
+        </e>
+        <e p="PathCreator" t="Include">
+          <e p="Core" t="Include">
+            <e p="Editor" t="Include">
+              <e p="Helper" t="Include">
+                <e p="MouseUtility.cs" t="Include" />
+                <e p="PathHandle.cs" t="Include" />
+                <e p="ScreenSpacePolyLine.cs" t="Include" />
+              </e>
+              <e p="PathCreatorEditor.asmdef" t="Include" />
+              <e p="PathEditor.cs" t="Include" />
+            </e>
+            <e p="Runtime" t="Include">
+              <e p="Objects" t="Include">
+                <e p="BezierPath.cs" t="Include" />
+                <e p="EndOfPathInstruction.cs" t="Include" />
+                <e p="GlobalDisplaySettings.cs" t="Include" />
+                <e p="MinMax3D.cs" t="Include" />
+                <e p="PathCreator.cs" t="Include" />
+                <e p="PathCreatorData.cs" t="Include" />
+                <e p="PathSpace.cs" t="Include" />
+                <e p="VertexPath.cs" t="Include" />
+              </e>
+              <e p="PathCreator.asmdef" t="Include" />
+              <e p="Utility" t="Include">
+                <e p="CubicBezierUtility.cs" t="Include" />
+                <e p="MathUtility.cs" t="Include" />
+                <e p="VertexPathUtility.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Examples" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="Editor" t="Include">
+                <e p="PathSceneToolEditor.cs" t="Include" />
+              </e>
+              <e p="GeneratePathExample.cs" t="Include" />
+              <e p="PathFollower.cs" t="Include" />
+              <e p="PathPlacer.cs" t="Include" />
+              <e p="PathSceneTool.cs" t="Include" />
+              <e p="PathSpawner.cs" t="Include" />
+              <e p="RoadMeshCreator.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="Scripts" t="Include">
           <e p="Audio" t="Include">
+            <e p="AnotherOption" t="Include">
+              <e p="DSPLib.cs" t="Include" />
+              <e p="SongController.cs" t="Include" />
+              <e p="SpectralFluxAnalyzer.cs" t="Include" />
+            </e>
             <e p="AudioManager.cs" t="Include" />
             <e p="AudioProcessor.cs" t="Include" />
+            <e p="TimeSignatureController.cs" t="Include" />
             <e p="UniBpmAnalyzer.cs" t="Include" />
           </e>
           <e p="Boss" t="Include">
@@ -19,6 +94,10 @@
           <e p="DynamicObjects" t="Include">
             <e p="Projectile.cs" t="Include" />
             <e p="ProjectileTrajectory.cs" t="Include" />
+            <e p="Shneck" t="Include">
+              <e p="SegmentMovement.cs" t="Include" />
+              <e p="ShneckMovement.cs" t="Include" />
+            </e>
           </e>
           <e p="GameLogic" t="Include">
             <e p="BossToPlayerInteractions.cs" t="Include" />
@@ -30,6 +109,7 @@
             <e p="DrumCollision.cs" t="Include" />
             <e p="DrumInteractionController.cs" t="Include" />
             <e p="DrumInteractionVisualization.cs" t="Include" />
+            <e p="DrumStickHitDetection.cs" t="Include" />
             <e p="TeleportationDrum.cs" t="Include" />
           </e>
           <e p="ObjectScripts" t="Include">
@@ -37,6 +117,8 @@
             <e p="PlatformTargets.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
+            <e p="PlayerAudio.cs" t="Include" />
+            <e p="PlayerCameraController.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
             <e p="PlayerMovement.cs" t="Include" />
             <e p="PlayerStartAnchorPosition.cs" t="Include" />
@@ -50,6 +132,7 @@
           </e>
           <e p="Visualizers" t="Include">
             <e p="DrumBeatVisualizer.cs" t="Include" />
+            <e p="DrumHitVisualizer.cs" t="Include" />
           </e>
         </e>
         <e p="TutorialInfo" t="Include">
@@ -63,6 +146,8 @@
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
+      <e p="PathCreator.csproj" t="IncludeRecursive" />
+      <e p="PathCreatorEditor.csproj" t="IncludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
       <e p="VRXR_game.sln" t="IncludeFlat" />
     </e>
