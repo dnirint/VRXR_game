@@ -763,6 +763,9 @@ MonoBehaviour:
   timeBetweenBeats: 0
   beatDurationForPlayer: 0.05
   nextBeatDurationForPlayer: Infinity
+  currentTimeSpeedModifier: 1
+  currentSpeedModifierWindow: 0
+  preBeatTime: 0.05
 --- !u!1 &910395397
 GameObject:
   m_ObjectHideFlags: 0
@@ -2358,7 +2361,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 8af85b55868eafa45a91dd80af4aa774, type: 3}
     - target: {fileID: 1410952070931523840, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: POOP_HIGH_PASS_THRESHOLD
-      value: 3000
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 1410952070931523840, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
       propertyPath: POOP_LOW_PASS_THRESHOLD
@@ -2448,5 +2451,6 @@ PrefabInstance:
       propertyPath: attackCooldown
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3956603746618458703, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1e711553aa854dc439b2b734d9e6db5a, type: 3}
