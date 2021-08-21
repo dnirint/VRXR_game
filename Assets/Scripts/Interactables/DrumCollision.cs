@@ -28,23 +28,9 @@ public class DrumCollision : MonoBehaviour
     {
         if (collision.CompareTag("stick"))
         {
-            
-            
-            
             RaycastHit hit;
 
-            var direction = collision.transform.position - transform.position;
-            if (Physics.Raycast(collision.transform.position, direction, out hit))
-            {
-                if (hit.collider.gameObject.CompareTag("drumplane"))
-                {
-                    HitDrum();
-                }
-            }
-
-            {
-                
-            }
+//            HitDrum();
             
             // Send a ray from the drumstick to the drum
 //            if (Physics.Raycast(collision.transform.position, collision.gameObject.transform.forward, out hit))
@@ -55,14 +41,14 @@ public class DrumCollision : MonoBehaviour
 //
 //                if (upDot<0)
 //                {
-//                    float velocity = collision.gameObject.GetComponent<DrumStickHitDetection>().speed;
-//
-//                    Debug.Log("Velocity: " + velocity);
-//
-//                    if (velocity > minimumVelocity)
-//                    {
-//                        HitDrum();
-//                    }
+                    float velocity = collision.gameObject.GetComponent<DrumStickHitDetection>().speed;
+
+                    Debug.Log("Velocity: " + velocity);
+
+                    if (velocity > minimumVelocity)
+                    {
+                        HitDrum();
+                    }
 //                }
                 
                 

@@ -1715,8 +1715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4cf0644e589cae4295a969b863712ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPlatformRightTeleport: {fileID: 0}
-  RightPlatformLeftTeleport: {fileID: 0}
 --- !u!4 &1722684226
 Transform:
   m_ObjectHideFlags: 0
