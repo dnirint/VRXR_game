@@ -13,8 +13,8 @@ public class ShneckMovement : MonoBehaviour
     public GameObject tail;
     public PathCreator pathCreator;
     public int bodySegmentCount = 5;
-    public float bodySegmentDistance = 0.2f;
-    public float distanceOffset = 0f;
+    public float bodySegmentDistance = 4f;
+    public float bodyDistanceFromHead = 1f;
     public float snekSpeedFactor = 1f;
     public float lapTimeInSeconds = 5f;
     float totalPathLength;
@@ -42,19 +42,20 @@ public class ShneckMovement : MonoBehaviour
         headMovement.pathCreator = pathCreator;
         snekSegments.Add(headMovement);
         float totalDistOffset = 0;
+        var bodyPartDistanceWithHeadOffset = bodyDistanceFromHead + bodySegmentDistance;
         for (int i=1; i<=bodySegmentCount; i++) // start from 1 so that the first segment won't collide with the head
         {
             var segGo = Instantiate(bodySegmentPrefab, bodyParent.transform);
             var segMove = segGo.GetComponent<SegmentMovement>();
             segMove.snekSpeed = snekSpeed;
-            totalDistOffset = -i * bodySegmentDistance;
+            totalDistOffset = -i * bodySegmentDistance - bodyDistanceFromHead;
             segMove.distOffset = totalDistOffset;
             segMove.pathCreator = pathCreator;
             snekSegments.Add(segMove);
             bodySegments.Add(segGo);
         }
         totalDistOffset -= bodySegmentDistance;
-        tailMovement.distOffset = totalDistOffset;
+        tailMovement.distOffset = totalDistOffset ;
         Debug.Log($"--> {totalDistOffset}");
         tailMovement.snekSpeed = snekSpeed;
         snekSegments.Add(tailMovement);
