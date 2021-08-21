@@ -24,6 +24,13 @@ public class AudioManager : MonoBehaviour
     public AudioMixer audioMixer;
     public static AudioManager Instance { get; private set; } = null;
 
+    
+    
+    public bool realTimeAnalysis = true;
+    private SpectralFluxAnalyzer analyzer;
+    private float[] spectrum;
+    private int sampleRate;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -35,25 +42,91 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        currentBPM = getBPM();
+        currentBPS = 60f / currentBPM;
+        
         Debug.Log($"BPM analysis: BPM is {currentBPM}, so beat intervals will be {beatInterval} seconds per beat.");
         setVolumeForAnalysisMusic(-80);
         //_audioProcessor.onBeat.AddListener(OnEnterBeatInterval);
         playerAudioSource = PlayerController.Instance.player.GetComponent<AudioSource>();
         playerAudioSource.clip = audioSource.clip;
+        SongController.Instance.OnProcessingEnded.AddListener(PlayAudio);
+        if (realTimeAnalysis)
+        {
+            spectrum = new float[1024];
+            analyzer = new SpectralFluxAnalyzer();
+            sampleRate = AudioSettings.outputSampleRate;
+        }
+//        else
+//        {
+//            int indexToPlot = getIndexFromTime(audioSource.time) / 1024;
+//            ShootToBeat(analyzer.spectralFluxSamples, indexToPlot);
+//        }
+        
+
+
         PlayAudio();
-        StartCoroutine(UpdateBPM());
+//        StartCoroutine(UpdateBPM());
     }
+    float clipLength;
+    int numTotalSamples;
 
+    private int getIndexFromTime(float curTime)
+    {
+        float lengthPerSample = clipLength / (float) numTotalSamples;
 
-
+        return Mathf.FloorToInt(curTime / lengthPerSample);
+    }
     private void Update()
     {
 
         playerAudioSource.time = audioSource.time + timeDifferenceWithBeatDetector;
+        
+        if (realTimeAnalysis)
+        {
+            audioSource.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
+            analyzer.analyzeSpectrum(spectrum, audioSource.time);
+            ShootToBeat(analyzer.spectralFluxSamples);
+        }
+        else
+        {
+            if (playingMusic)
+            {
+                int indexToPlot = getIndexFromTime(audioSource.time) / 1024;
+                ShootToBeat(SongController.Instance.preProcessedSpectralFluxAnalyzer.spectralFluxSamples, indexToPlot);
+            }
+        }
+        
+        
         //Debug.Log($"CURRENT BPM : {currentBPM}");
     }
+    public int displayWindowSize = 300;
 
+    private void ShootToBeat(List<SpectralFluxInfo> pointInfo, int curIndex = -1)
+    {
+        int windowStart = 0;
+        int windowEnd = 0;
+
+        if (curIndex > 0)
+        {
+            windowStart = Mathf.Max(0, curIndex - displayWindowSize / 2);
+            windowEnd = Mathf.Min(curIndex + displayWindowSize / 2, pointInfo.Count - 1);
+        }
+        else
+        {
+            windowStart = Mathf.Max(0, pointInfo.Count - displayWindowSize - 1);
+            windowEnd = Mathf.Min(windowStart + displayWindowSize, pointInfo.Count);
+        }
+
+        for (int i = windowStart; i < windowEnd; i++)
+        {
+            if (pointInfo[i].isPeak)
+            {
+                OnBeatStart.Invoke();
+                return;
+            }
+        }
+    }
     public float clipWindowSizeInSeconds = 30f;
     //public float clipWindowUpdateCooldown = 1f;
     private float lastWindowUpdateTime = 0;
@@ -164,9 +237,13 @@ public class AudioManager : MonoBehaviour
     private IEnumerator PlayAudioWithDistance()
     {
         audioSource.Play();
+        playingMusic = true;
         yield return new WaitForSeconds(timeDifferenceWithBeatDetector);
         playerAudioSource.Play();
     }
+
+
+    private bool playingMusic = false;
 
     private void PlayAudio()
     {
