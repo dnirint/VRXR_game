@@ -131,9 +131,13 @@
             <e p="TemanionScript.cs" t="Include" />
           </e>
           <e p="Visualizers" t="Include">
+            <e p="ColorInversion.cs" t="Include" />
             <e p="DrumBeatVisualizer.cs" t="Include" />
             <e p="DrumHitVisualizer.cs" t="Include" />
           </e>
+        </e>
+        <e p="Shaders" t="Include">
+          <e p="Invert.shader" t="Include" />
         </e>
         <e p="TutorialInfo" t="Include">
           <e p="Scripts" t="Include">

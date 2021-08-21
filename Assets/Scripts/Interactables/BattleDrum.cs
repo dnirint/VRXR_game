@@ -5,7 +5,10 @@ using UnityEngine;
 public class BattleDrum : MonoBehaviour
 {
 
-    public int priority = 0; 
+    public int priority = 0;
+    public GameObject drumPrefab;
+    
+    
     
     void Start()
     {
