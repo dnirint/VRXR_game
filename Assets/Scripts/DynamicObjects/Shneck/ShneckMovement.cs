@@ -48,7 +48,6 @@ public class ShneckMovement : MonoBehaviour
             var segMove = segGo.GetComponent<SegmentMovement>();
             segMove.snekSpeed = snekSpeed;
             totalDistOffset = -i * bodySegmentDistance;
-            Debug.Log($"-- {totalDistOffset}");
             segMove.distOffset = totalDistOffset;
             segMove.pathCreator = pathCreator;
             snekSegments.Add(segMove);
