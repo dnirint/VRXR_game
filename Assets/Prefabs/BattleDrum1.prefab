@@ -191,41 +191,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: -0.0000038146973, y: 0.00000036373416, z: 0.0000028610225}
---- !u!111 &1970326960002142429
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911806073331775475}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 85bae0a43f20ebd4181a9b2c2f7ab657, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 85bae0a43f20ebd4181a9b2c2f7ab657, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
---- !u!114 &6807913474895713592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911806073331775475}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1f2bbbaddfffae47b499070105660e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drumParent: {fileID: 3829057613984823602}
-  PlayerTouchedDrum:
-    m_PersistentCalls:
-      m_Calls: []
-  PlayerTouchedDrumVISUALIZE:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4130186919380297520
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,8 +237,9 @@ GameObject:
   - component: {fileID: 64267257337437777}
   - component: {fileID: 1982774299793379041}
   - component: {fileID: 1645347922531521598}
+  - component: {fileID: 8347498207583776867}
   m_Layer: 0
-  m_Name: BattleDrum
+  m_Name: BattleDrum1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,6 +340,21 @@ MonoBehaviour:
   drumTop: {fileID: 4908227761788982767}
   drumTopParent: {fileID: 5758677440196012315}
   reactBlipFactor: 0.5
+--- !u!111 &8347498207583776867
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908227761641187115}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,22 +503,6 @@ Transform:
   m_Father: {fileID: 4908227761641187108}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &3251176529221340693
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6748364670600177451}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: cda0cfecd603a434e93998ddfffa98f2, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: cda0cfecd603a434e93998ddfffa98f2, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &7679011974193810723
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,11 +668,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3776a69888869ed419c20089fcb7d9b0, type: 3}
---- !u!1 &2911806073331775475 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3776a69888869ed419c20089fcb7d9b0, type: 3}
-  m_PrefabInstance: {fileID: 2641847044725983906}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2531868096893005129 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3776a69888869ed419c20089fcb7d9b0, type: 3}
@@ -882,11 +842,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aadef0d4e4709d44aae787849cfe65b, type: 3}
---- !u!1 &6748364670600177451 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5aadef0d4e4709d44aae787849cfe65b, type: 3}
-  m_PrefabInstance: {fileID: 5865490155395504762}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6263611277245627793 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5aadef0d4e4709d44aae787849cfe65b, type: 3}
