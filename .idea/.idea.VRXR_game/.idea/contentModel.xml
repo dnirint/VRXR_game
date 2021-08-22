@@ -133,6 +133,7 @@
           <e p="Visualizers" t="Include">
             <e p="ColorInversion.cs" t="Include" />
             <e p="DrumBeatVisualizer.cs" t="Include" />
+            <e p="DrumHitAnimationController.cs" t="Include" />
             <e p="DrumHitVisualizer.cs" t="Include" />
           </e>
         </e>

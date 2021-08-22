@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!111 &2671834624251284771
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233806824871278612}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 4444e5155738d374a86f2e14a02d2757, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 4444e5155738d374a86f2e14a02d2757, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1713945361506986331
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +254,7 @@ GameObject:
   - component: {fileID: 1982774299793379041}
   - component: {fileID: 1645347922531521598}
   - component: {fileID: 3347757006798397313}
+  - component: {fileID: 7379183238926588508}
   m_Layer: 0
   m_Name: BattleDrum2
   m_TagString: Untagged
@@ -356,6 +373,20 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &7379183238926588508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908227761641187115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ed758cf0ff31e47b4294c034c60088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drumTop: {fileID: 4908227761788982767}
+  drumhitanimation: {fileID: 2671834624251284771}
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +774,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 175a421547ae4574293d48d006847991, type: 3}
+--- !u!1 &1233806824871278612 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 175a421547ae4574293d48d006847991, type: 3}
+  m_PrefabInstance: {fileID: 2152216035332883781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1897295728705266350 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 175a421547ae4574293d48d006847991, type: 3}

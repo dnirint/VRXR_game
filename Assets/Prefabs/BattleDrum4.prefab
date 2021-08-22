@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 1982774299793379041}
   - component: {fileID: 1645347922531521598}
   - component: {fileID: 3347757006798397313}
+  - component: {fileID: 245909291202148504}
   m_Layer: 0
   m_Name: BattleDrum4
   m_TagString: Untagged
@@ -356,6 +357,20 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &245909291202148504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908227761641187115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ed758cf0ff31e47b4294c034c60088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drumTop: {fileID: 4908227761788982767}
+  drumhitanimation: {fileID: 1658238125042341539}
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +519,22 @@ Transform:
   m_Father: {fileID: 4908227761641187108}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &1658238125042341539
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7449875045313258631}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 4444e5155738d374a86f2e14a02d2757, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 4444e5155738d374a86f2e14a02d2757, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &7679011974193810723
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,9 +682,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7095237591552009568, guid: c50efc907d888df42874b074a998b218, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c50efc907d888df42874b074a998b218, type: 3}
       propertyPath: m_Name
       value: BodyDrum4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096061902303107279, guid: c50efc907d888df42874b074a998b218, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7408069207491882432, guid: c50efc907d888df42874b074a998b218, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7408069207491882432, guid: c50efc907d888df42874b074a998b218, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7408069207491882432, guid: c50efc907d888df42874b074a998b218, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c50efc907d888df42874b074a998b218, type: 3}
@@ -675,7 +726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8543ca4b8e48304c91b05db77c8a7e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.063
+      value: 2.14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8543ca4b8e48304c91b05db77c8a7e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -735,6 +786,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8543ca4b8e48304c91b05db77c8a7e4, type: 3}
+--- !u!1 &7449875045313258631 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f8543ca4b8e48304c91b05db77c8a7e4, type: 3}
+  m_PrefabInstance: {fileID: 7755810093307566550}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7793643314892373565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f8543ca4b8e48304c91b05db77c8a7e4, type: 3}

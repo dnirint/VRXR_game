@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!111 &7592475414750301095
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311633340097319707}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 4444e5155738d374a86f2e14a02d2757, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 4444e5155738d374a86f2e14a02d2757, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1713945361506986331
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +254,7 @@ GameObject:
   - component: {fileID: 1982774299793379041}
   - component: {fileID: 1645347922531521598}
   - component: {fileID: 3347757006798397313}
+  - component: {fileID: 5209990981194693807}
   m_Layer: 0
   m_Name: BattleDrum3
   m_TagString: Untagged
@@ -356,6 +373,20 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &5209990981194693807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908227761641187115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ed758cf0ff31e47b4294c034c60088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drumTop: {fileID: 4908227761788982767}
+  drumhitanimation: {fileID: 7592475414750301095}
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,7 +644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 578cfd79e09eb3d4db54820852a4b5b0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.03
+      value: 2.14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 578cfd79e09eb3d4db54820852a4b5b0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -657,6 +688,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 578cfd79e09eb3d4db54820852a4b5b0, type: 3}
+--- !u!1 &311633340097319707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 578cfd79e09eb3d4db54820852a4b5b0, type: 3}
+  m_PrefabInstance: {fileID: 617640824861519434}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1087888087756507553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 578cfd79e09eb3d4db54820852a4b5b0, type: 3}
