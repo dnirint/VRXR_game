@@ -18,7 +18,7 @@ public class TimeSignatureController : MonoBehaviour
     public float averageBPM;
     public float averageBPS;
     public static TimeSignatureController Instance = null;
-
+    public float AudioTimeOffset = 3;
     private void Awake()
     {
         if (Instance == null)
@@ -52,7 +52,7 @@ public class TimeSignatureController : MonoBehaviour
         float totalPreprocessTime = preprocessEndTime - preprocessStartTime;
         Debug.Log($"BPM: {averageBPM}. Total time it took to preprocess = {totalPreprocessTime}");
         StartCoroutine(StartTrackAndTrackSignature());
-        //yield return new WaitForSeconds(audioPlayerTimeOffset);
+        yield return new WaitForSeconds(AudioTimeOffset);
         PlayerAudio.Instance.StartAudibleMusic();
 
         yield return null;
@@ -191,6 +191,7 @@ public class TimeSignatureController : MonoBehaviour
                 {
                     if (!isQuietPart)
                     {
+                        
                         CriticalBeatStart.Invoke();
                     }
                 }

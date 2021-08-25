@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BossToPlayerInteractions : MonoBehaviour
 {
@@ -60,8 +62,8 @@ public class BossToPlayerInteractions : MonoBehaviour
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
-        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
-//        SongController.Instance.OnBeatDetected.AddListener(AttackTarget);
+//        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+        TimeSignatureController.Instance.CriticalBeatEnd.AddListener(AttackTarget);
         platformTargets = new List<List<GameObject>>();
         foreach (var platform in bossTargets)
         {
@@ -164,15 +166,17 @@ public class BossToPlayerInteractions : MonoBehaviour
             lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
             Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
-            int newTarget = GetRandomTargetInCluster(curTargetIndex);
+//            int newTarget = GetRandomTargetInCluster(curTargetIndex);
+            int newTarget = Random.Range(0, 4);
             Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
             var newProjectileGO = Instantiate(projectilePrefabs[newTarget], projectileParent);
             
 //            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
             
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
-            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
+//            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
+            newProjectile.timeToTarget = TimeSignatureController.Instance.AudioTimeOffset;
             var targetGO = platformTargets[startTargetIndex][newTarget];
             newProjectile.targetGO = targetGO;
             drumToProjectileQueue[targetGO].Enqueue(newProjectile);
