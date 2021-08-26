@@ -20,8 +20,11 @@ public class BossToPlayerInteractions : MonoBehaviour
     private float lastAttackTime = 0f;
     private GameObject boss;
 
+
+    private float switchTargetAttackCooldown = 1;
     private float timeBetweenSwitches = 10;
     private bool shouldSwitchTargets = true;
+
     private int curTargetIndex = 0;
     /*
      * We have 3 platforms
@@ -58,7 +61,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Start()
     {
         lastAttackTime = Time.time;
-        
+
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
@@ -75,7 +78,6 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     private void SetTargetQueues()
     {
-
         drumToProjectileQueue = new Dictionary<GameObject, Queue<Projectile>>();
         foreach (var platform in platformTargets)
         {
@@ -147,7 +149,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     {
 //        attackCooldown = AudioManager.Instance.currentBPS;
 //        AttackTarget();
-        
+
         foreach (var platform in platformTargets)
         {
             foreach (var target in platform)
@@ -162,7 +164,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     {
         if (isAttacking && lastAttackTime + attackCooldown < Time.time)
 //            if (isAttacking)
-        { 
+        {
             lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
             Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
@@ -170,9 +172,9 @@ public class BossToPlayerInteractions : MonoBehaviour
             int newTarget = Random.Range(0, 4);
             Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
             var newProjectileGO = Instantiate(projectilePrefabs[newTarget], projectileParent);
-            
+
 //            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
-            
+
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
 //            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
@@ -191,25 +193,22 @@ public class BossToPlayerInteractions : MonoBehaviour
         if (drumToProjectileQueue[target].Count > 0)
         {
             var projectile = drumToProjectileQueue[target].Dequeue();
-            
+
             Destroy(projectile.gameObject);
         }
         else
         {
             // bzzt
         }
-
     }
 
     void OnTargetHit(Projectile projectile)
     {
-
         DestroyProjectileInQueue(projectile.targetGO);
     }
 
     public void DestroyClosestProjectileOnSameLane(GameObject target)
     {
-
         DestroyProjectileInQueue(target);
     }
 
@@ -220,7 +219,10 @@ public class BossToPlayerInteractions : MonoBehaviour
         {
             if (isAttacking)
             {
+                isAttacking = false;
                 SetNewPlatform();
+                yield return new WaitForSeconds(switchTargetAttackCooldown);
+                isAttacking = true;
             }
 
             yield return new WaitForSeconds(timeBetweenSwitches);
