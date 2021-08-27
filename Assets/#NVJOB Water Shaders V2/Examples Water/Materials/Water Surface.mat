@@ -202,10 +202,10 @@ Material:
     - _ParallaxAmount: 0.1
     - _ParallaxFlow: 30
     - _ParallaxMapTiling: 0.51
-    - _ParallaxNoiseAmplitude: 3
-    - _ParallaxNoiseFrequency: 1
+    - _ParallaxNoiseAmplitude: 1.58
+    - _ParallaxNoiseFrequency: 3.49
     - _ParallaxNoiseGain: 0.611
-    - _ParallaxNoiseLacunarity: 5
+    - _ParallaxNoiseLacunarity: 6
     - _ParallaxNoiseScale: 1
     - _ParallaxNormal2Offset: 2
     - _ParallaxScale: 0.51
@@ -237,10 +237,11 @@ Material:
     - _DiffuseColor: {r: 0.32352936, g: 0.32352936, b: 0.32352936, a: 1}
     - _EdgeColor: {r: 0.5588235, g: 0.5588235, b: 0.5588235, a: 1}
     - _EmissionColor: {r: 0.5441177, g: 0.5441177, b: 0.5441177, a: 1}
-    - _FoamColor: {r: 6.0628653, g: 5.474559, b: 4.8442297, a: 1}
+    - _FoamColor: {r: 8.094401, g: 8.094401, b: 8.094401, a: 1}
     - _FoamSoft: {r: 0.14, g: 0.4, b: 1.5, a: 0}
     - _MirrorColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _MirrorDepthColor: {r: 0, g: 0, b: 0, a: 0.5}
     - _ReflectColor: {r: 0.07605405, g: 0.084, b: 0.082864866, a: 1}
     - _SpecColor: {r: 0.4, g: 0.4, b: 0.3764706, a: 1}
     - _SpecularColor: {r: 0.5808823, g: 0.5808823, b: 0.5808823, a: 1}
+  m_BuildTextureStacks: []
