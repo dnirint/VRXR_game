@@ -14,7 +14,9 @@ public class Projectile : MonoBehaviour
     private Transform target;
     private Vector3 direction;
     public UnityEvent OnTimeout;
-
+    
+    
+    
     public float distanceToTarget { get; private set; }
 
     void Start()
@@ -82,7 +84,7 @@ public class Projectile : MonoBehaviour
             transform.position = Vector3.Lerp(startingPos, targetPos, ratio);
             if (Vector3.Distance(transform.position, target.position) < 0.3f)
             {
-                onTargetHit.Invoke();
+                TargetHit.Invoke();
             }
 
             yield return null;
@@ -95,6 +97,12 @@ public class Projectile : MonoBehaviour
     }
 
     #endregion
+
+    void OnDrumHit()
+    {
+        TargetHit.Invoke();
+        MapLogic.Instance.ProjectileHitDrum.Invoke();
+    }
 
     private void OnDestroy()
     {

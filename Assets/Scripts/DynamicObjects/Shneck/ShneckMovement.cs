@@ -20,16 +20,23 @@ public class ShneckMovement : MonoBehaviour
     float totalPathLength;
     public float snekSpeed;
     public List<SegmentMovement> snekSegments = new List<SegmentMovement>();
+
+    public Material hurtMaterial;
+    
+    private int currentLifeSegmentIndex = 0;
+    
+    
+    
     void Start()
     {
-
+        
         totalPathLength = pathCreator.path.length;
         snekSpeed = totalPathLength / lapTimeInSeconds;
         Debug.Log($"------path len = {totalPathLength}, speed = {snekSpeed} units/sec");
 
         // build the snek
         BuildSnek();
-
+        MapLogic.Instance.ProjectileHitDrum.AddListener(ChangeBodyLife);
 
     }
 
@@ -79,7 +86,23 @@ public class ShneckMovement : MonoBehaviour
         }
     }
 
-    void Update()
+    private void ChangeBodyLife()
     {
+        var bodySegment = bodySegments[currentLifeSegmentIndex];
+        var meshR = bodySegment.GetComponent<MeshRenderer>();
+        meshR.material = hurtMaterial;
+        currentLifeSegmentIndex++;
+        if (currentLifeSegmentIndex==bodySegmentCount)
+        {
+            //Invoke some endgame event
+        }
+
     }
+    
+    
+    
+    
+    
+    
+    
 }
