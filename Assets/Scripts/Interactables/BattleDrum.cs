@@ -7,13 +7,13 @@ public class BattleDrum : MonoBehaviour
 
     public int priority = 0;
 
-    public bool isTargeted = false;
+    public bool isInteractable = false;
 
     private DrumInteractionVisualization m_div;
-    public void SetTargeted(bool targeted)
+    public void SetInteractable(bool targeted)
     {
-        isTargeted = targeted;
-        if (isTargeted)
+        isInteractable = targeted;
+        if (isInteractable)
         {
             m_div.EnterInteractable();
         }
@@ -30,8 +30,11 @@ public class BattleDrum : MonoBehaviour
 
     void OnDrumHit()
     {
-
-        BossToPlayerInteractions.Instance.DestroyClosestProjectileOnSameLane(gameObject);
+        if (isInteractable)
+        {
+            BossToPlayerInteractions.Instance.DestroyClosestProjectileOnSameLane(gameObject);
+        }
+        
     }
 
 }

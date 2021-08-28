@@ -15,7 +15,7 @@ public class DrumInteractionVisualization : MonoBehaviour
     Material drumTopMat;
     public void EnterInteractable()
     {
-        if (!m_battleDrum.isTargeted || isInteractable)
+        if (!m_battleDrum.isInteractable || isInteractable)
         {
             return;
         }

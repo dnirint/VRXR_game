@@ -17,10 +17,11 @@ public class DrumCollision : MonoBehaviour
     private DrumInteractionVisualization m_interactionVisualization;
     // (UP)
     private readonly Vector3 directionToAllowHitFrom = Vector3.up;
-    
-    
+
+    private BattleDrum m_battleDrum;
     private void Start()
     {
+        m_battleDrum = GetComponent<BattleDrum>();
         m_interactionVisualization = GetComponent<DrumInteractionVisualization>();
         PlayerTouchedDrumVISUALIZE.AddListener(test);
     }
@@ -81,6 +82,10 @@ public class DrumCollision : MonoBehaviour
     private void HitDrum()
     {
         lastCollision = Time.time;
+        if (m_battleDrum != null && !m_battleDrum.isInteractable) // if it's a battle drum and it's not interactable
+        {
+            return;
+        }
         PlayerTouchedDrum.Invoke();
         m_interactionVisualization.ExitInteractable();
         PlayerTouchedDrumVISUALIZE.Invoke();

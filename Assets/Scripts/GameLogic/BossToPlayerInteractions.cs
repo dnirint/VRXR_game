@@ -165,7 +165,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         if (projectileOrder.Count > 0)
         {
             var oldClosest = projectileOrder.Dequeue();
-            oldClosest.targetGO.GetComponent<BattleDrum>().SetTargeted(false);
+            oldClosest.targetGO.GetComponent<BattleDrum>().SetInteractable(false);
         }
     }
 
@@ -183,9 +183,9 @@ public class BossToPlayerInteractions : MonoBehaviour
                     m_closestProjectile = nextClosestProjectile;
                     m_closestBattleDrum = m_closestProjectile.targetGO.GetComponent<BattleDrum>();
                 }
-                if (nextClosestProjectile.timeToTarget <= TimeSignatureController.Instance.preBeatTime && !m_closestBattleDrum.isTargeted)
+                if (nextClosestProjectile.timeToTarget <= TimeSignatureController.Instance.preBeatTime && !m_closestBattleDrum.isInteractable)
                 {
-                    nextClosestProjectile.targetGO.GetComponent<BattleDrum>().SetTargeted(true);
+                    nextClosestProjectile.targetGO.GetComponent<BattleDrum>().SetInteractable(true);
                 }
 
             }
