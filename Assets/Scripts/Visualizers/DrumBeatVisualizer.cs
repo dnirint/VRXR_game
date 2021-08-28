@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrumBeatVisualizer : MonoBehaviour
 {
     public GameObject drumTop;
-    public Material drumTopMaterial;
+    private Material drumTopMaterial;
     private bool isInsideBeat = false;
     public Color inBeatColor = Color.white;
     public Color outOfBeatColor = Color.black;
@@ -22,8 +22,8 @@ public class DrumBeatVisualizer : MonoBehaviour
             //AudioManager.Instance.OnBeatStart.AddListener(() => { StartCoroutine(TransitionToActiveColor()); });
             //AudioManager.Instance.OnActualBeatEnd.AddListener(TransitionToInactiveColor);
 
-            AudioManager.Instance.OnActualBeatStart.AddListener(VisualizeInBeat);
-            AudioManager.Instance.OnActualBeatEnd.AddListener(VisualizeOutOfBeat);
+            TimeSignatureController.Instance.ActualCriticalBeatStart.AddListener(VisualizeInBeat);
+            TimeSignatureController.Instance.ActualCriticalBeatEnd.AddListener(VisualizeOutOfBeat);
         }
 
         
@@ -31,6 +31,7 @@ public class DrumBeatVisualizer : MonoBehaviour
 
     void VisualizeInBeat()
     {
+        Debug.Log($"VISUALIZING DRUM IN BEAT");
         if (!isInsideBeat)
         {
             drumTopMaterial.color = inBeatColor;

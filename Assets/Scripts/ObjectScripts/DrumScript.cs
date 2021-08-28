@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class DrumScript : MonoBehaviour
 {
-    public GameObject drumTop;
-    public GameObject drumBody;
     public DrumInteractionController interactionController;
     public DrumCollision drumCollision;
 

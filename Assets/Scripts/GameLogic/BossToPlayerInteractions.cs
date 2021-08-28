@@ -26,24 +26,9 @@ public class BossToPlayerInteractions : MonoBehaviour
     private bool shouldSwitchTargets = true;
 
     private int curTargetIndex = 0;
-    /*
-     * We have 3 platforms
-     *  each platform has 4 drums
-     *      each drum is a target
-     * 
-     * We need a list of plaforms and for each platform we will hold a list of targets
-     * List<List<GameObject>>  -> target pointers
-     * 
-     * For each target, we need to hold a queue of projectiles, so:
-     * List<List<Queue<GameObject>>> -> projectiles
-     * 
-     * HashSet<GameObject, Queue<Projectile>>
-     * 
-     */
-
-    //private List<List<HashSet<Projectile>>> targetQueues;
     private Dictionary<GameObject, Queue<Projectile>> drumToProjectileQueue;
-    // list of list of hashsets
+
+    private Queue<Projectile> projectileOrder;
 
     private void Awake()
     {
@@ -61,11 +46,12 @@ public class BossToPlayerInteractions : MonoBehaviour
     void Start()
     {
         lastAttackTime = Time.time;
-
+        projectileOrder = new Queue<Projectile>();
         boss = BossController.Instance.boss;
         //TODO: Move this from start, should be handled by a game manager.
         StartCoroutine(SwitchTargets());
-//        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
+        StartCoroutine(ClosestProjectileInteractionHandler());
+        //        AudioManager.Instance.OnBeatStart.AddListener(AttackTarget);
         TimeSignatureController.Instance.CriticalBeatEnd.AddListener(AttackTarget);
         platformTargets = new List<List<GameObject>>();
         foreach (var platform in bossTargets)
@@ -74,6 +60,7 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
 
         SetTargetQueues();
+        
     }
 
     private void SetTargetQueues()
@@ -86,22 +73,6 @@ public class BossToPlayerInteractions : MonoBehaviour
                 drumToProjectileQueue[target] = new Queue<Projectile>();
             }
         }
-
-        //targetQueues = new List<List<HashSet<Projectile>>>();
-        //// for each group of drums
-        //foreach (var cluster in platformTargets)
-        //{
-        //    List<HashSet<Projectile>> clusterList = new List<HashSet<Projectile>>();
-        //    // for each drum in the group
-        //    foreach (var target in cluster)
-        //    {
-        //        // create a hashset for that drums lane
-        //        clusterList.Add(new HashSet<Projectile>());
-        //    }
-
-        //    // Add the list of hash sets
-        //    targetQueues.Add(clusterList);
-        //}
     }
 
 
@@ -178,18 +149,55 @@ public class BossToPlayerInteractions : MonoBehaviour
             Projectile newProjectile = newProjectileGO.GetComponent<Projectile>();
 //            newProjectile.timeToTarget = AudioManager.Instance.TimeToActualBeat();
             newProjectile.origin = boss.transform.position;
-            newProjectile.timeToTarget = TimeSignatureController.Instance.AudioTimeOffset;
+            newProjectile.totalFlightTime = TimeSignatureController.Instance.AudioTimeOffset;
             var targetGO = platformTargets[startTargetIndex][newTarget];
             newProjectile.targetGO = targetGO;
             drumToProjectileQueue[targetGO].Enqueue(newProjectile);
+            projectileOrder.Enqueue(newProjectile);
             //targetQueues[startTargetIndex][newTarget].Add(newProjectile);
             newProjectile.TargetHit.AddListener(() => { OnTargetHit(newProjectile); });
         }
     }
 
+    
+    void UpdateCurrentClosestProjectile()
+    {
+        if (projectileOrder.Count > 0)
+        {
+            var oldClosest = projectileOrder.Dequeue();
+            oldClosest.targetGO.GetComponent<BattleDrum>().SetTargeted(false);
+        }
+    }
+
+    private Projectile m_closestProjectile;
+    private BattleDrum m_closestBattleDrum;
+    IEnumerator ClosestProjectileInteractionHandler()
+    {
+        while (true)
+        {
+            if (projectileOrder.Count > 0)
+            {
+                var nextClosestProjectile = projectileOrder.Peek();
+                if (nextClosestProjectile != m_closestProjectile)
+                {
+                    m_closestProjectile = nextClosestProjectile;
+                    m_closestBattleDrum = m_closestProjectile.targetGO.GetComponent<BattleDrum>();
+                }
+                if (nextClosestProjectile.timeToTarget <= TimeSignatureController.Instance.preBeatTime && !m_closestBattleDrum.isTargeted)
+                {
+                    nextClosestProjectile.targetGO.GetComponent<BattleDrum>().SetTargeted(true);
+                }
+
+            }
+            yield return null;
+        }
+        yield return null;
+
+    }
 
     void DestroyProjectileInQueue(GameObject target)
     {
+        UpdateCurrentClosestProjectile();
         if (drumToProjectileQueue[target].Count > 0)
         {
             var projectile = drumToProjectileQueue[target].Dequeue();
@@ -209,6 +217,11 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     public void DestroyClosestProjectileOnSameLane(GameObject target)
     {
+        var closestProjectile = projectileOrder.Peek();
+        if (closestProjectile.targetGO != target)
+        {
+            return;
+        }
         DestroyProjectileInQueue(target);
     }
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class DrumHitVisualizer : MonoBehaviour
 {
-    public GameObject outerRing;
-    public GameObject innerRing;
     public GameObject drumTop;
     public GameObject drumTopParent;
 
@@ -16,16 +14,12 @@ public class DrumHitVisualizer : MonoBehaviour
     public float reactBlipFactor = 0.5f;
     void Start()
     {
-        //startingScale = transform.localScale;
-        //startingScale = outerRing.transform.localScale;
         startingScale = drumTopParent.transform.localScale;
         drumTop.GetComponent<DrumCollision>().PlayerTouchedDrumVISUALIZE.AddListener(PerformReact);
     }
     private Vector3 startingScale;
     void ResetScale()
     {
-        //transform.localScale = startingScale;
-        //outerRing.transform.localScale = startingScale;
         drumTopParent.transform.localScale = startingScale;
     }
 
@@ -41,8 +35,6 @@ public class DrumHitVisualizer : MonoBehaviour
             else
             {
                 float factor = (Time.time - reactStartTime) / reactDurationInSeconds;
-                //transform.localScale = startingScale + startingScale * -Mathf.Sin(Mathf.PI*factor)* reactBlipFactor;
-                //outerRing.transform.localScale = startingScale + startingScale * -Mathf.Sin(Mathf.PI*factor)* reactBlipFactor;
                 drumTopParent.transform.localScale = startingScale + startingScale * -Mathf.Sin(Mathf.PI*factor)* reactBlipFactor;
             }
         }

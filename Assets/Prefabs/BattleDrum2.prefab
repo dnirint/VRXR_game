@@ -251,10 +251,10 @@ GameObject:
   - component: {fileID: 3829057613984823602}
   - component: {fileID: 494899638531515835}
   - component: {fileID: 64267257337437777}
-  - component: {fileID: 1982774299793379041}
   - component: {fileID: 1645347922531521598}
   - component: {fileID: 3347757006798397313}
   - component: {fileID: 7379183238926588508}
+  - component: {fileID: 2230467942081929880}
   m_Layer: 0
   m_Name: BattleDrum2
   m_TagString: Untagged
@@ -277,6 +277,7 @@ Transform:
   - {fileID: 6540906996017496869}
   - {fileID: 663753756835821454}
   - {fileID: 1897295728705266350}
+  - {fileID: 4462883169606199885}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -292,8 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b071f9ba9b0f4ba6fe2e00db316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drumTop: {fileID: 4908227761788982767}
-  drumBody: {fileID: 0}
   interactionController: {fileID: 494899638531515835}
   drumCollision: {fileID: 1878825473595390659}
 --- !u!114 &494899638531515835
@@ -321,25 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  drumPrefab: {fileID: 0}
---- !u!114 &1982774299793379041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4908227761641187115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b01927580281ec468f629788497963b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drumTop: {fileID: 4908227761788982767}
-  drumTopMaterial: {fileID: 0}
-  inBeatColor: {r: 1, g: 1, b: 1, a: 1}
-  outOfBeatColor: {r: 0, g: 0, b: 0, a: 1}
-  transitionTime: 1
-  shouldVisualize: 0
+  isTargeted: 0
 --- !u!114 &1645347922531521598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,8 +333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19cb2f4ac7c285c43b9509a971881dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outerRing: {fileID: 0}
-  innerRing: {fileID: 0}
   drumTop: {fileID: 4908227761788982767}
   drumTopParent: {fileID: 5758677440196012315}
   reactBlipFactor: 0.5
@@ -387,6 +366,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drumTop: {fileID: 4908227761788982767}
   drumhitanimation: {fileID: 2671834624251284771}
+--- !u!114 &2230467942081929880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908227761641187115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28391bd397971847a9d5e761d3af63c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drumTop: {fileID: 5058019582931634977}
+  interactablePeriod: 0
+  isInteractable: 0
+  colorEnabled: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,4 +778,71 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 175a421547ae4574293d48d006847991, type: 3}
   m_PrefabInstance: {fileID: 2152216035332883781}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6968418277737702638
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4908227761641187108}
+    m_Modifications:
+    - target: {fileID: 2775758352137400271, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_Name
+      value: DrumVisualizeCircle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.127
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+--- !u!1 &5058019582931634977 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2775758352137400271, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+  m_PrefabInstance: {fileID: 6968418277737702638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4462883169606199885 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6727132200578797219, guid: 436975fdc42b91d41a5480babb5e99bd, type: 3}
+  m_PrefabInstance: {fileID: 6968418277737702638}
   m_PrefabAsset: {fileID: 0}

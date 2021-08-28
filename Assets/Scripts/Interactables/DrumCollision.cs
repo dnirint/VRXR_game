@@ -14,13 +14,14 @@ public class DrumCollision : MonoBehaviour
     
     private float minimumVelocity = 2;
     private float degreeThreshold = 90; // Difference allowed between the normal of the hit and the direction we allow 
-
+    private DrumInteractionVisualization m_interactionVisualization;
     // (UP)
     private readonly Vector3 directionToAllowHitFrom = Vector3.up;
     
     
     private void Start()
     {
+        m_interactionVisualization = GetComponent<DrumInteractionVisualization>();
         PlayerTouchedDrumVISUALIZE.AddListener(test);
     }
 
@@ -81,6 +82,7 @@ public class DrumCollision : MonoBehaviour
     {
         lastCollision = Time.time;
         PlayerTouchedDrum.Invoke();
+        m_interactionVisualization.ExitInteractable();
         PlayerTouchedDrumVISUALIZE.Invoke();
     }
 

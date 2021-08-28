@@ -10,8 +10,12 @@ public class TimeSignatureController : MonoBehaviour
 
     private AudioClip audioClip;
 
+    public UnityEvent ActualCriticalBeatStart;
+    public UnityEvent ActualCriticalBeatEnd;
     public UnityEvent CriticalBeatStart;
     public UnityEvent CriticalBeatEnd;
+    public UnityEvent ActualBeatStart;
+    public UnityEvent ActualBeatEnd;
     public UnityEvent BeatStart;
     public UnityEvent BeatEnd;
 
@@ -158,7 +162,7 @@ public class TimeSignatureController : MonoBehaviour
     public int criticalBeatNumber = 1;
     public float timeBetweenBeats = 0;
     public float beatDurationForPlayer = 0.05f;
-    public float nextBeatDurationForPlayer = float.PositiveInfinity;
+    public float nextBeatStartForPlayer = float.PositiveInfinity;
     public int currentTimeSpeedModifier = 1;
     public int currentSpeedModifierWindow = 0;
     public float preBeatTime = 0.05f;
@@ -168,6 +172,63 @@ public class TimeSignatureController : MonoBehaviour
     private int initial_criticalBeatNumber;
     private float initial_timeBetweenBeats;
 
+
+
+    void DoBeatStartLogic(bool audibleBeat=false)
+    {
+
+        if (!isQuietPart)
+        {
+            bool isCriticalBeat = beatCounter % initial_beatsPerBar == criticalBeatNumber;
+            if (isCriticalBeat) CriticalBeatStart.Invoke(); else BeatStart.Invoke();
+            StartCoroutine(InvokeActualBeatStartAfterSeconds(AudioTimeOffset, isCriticalBeat: isCriticalBeat));
+        }
+        nextBeatStartForPlayer = float.PositiveInfinity; // to avoid re-trigger after this time
+        
+    }
+
+    void DoBeatEndLogic(bool audibleBeat = false)
+    {
+        if (!isQuietPart)
+        {
+            bool isCriticalBeat = beatCounter % initial_beatsPerBar == criticalBeatNumber;
+            if (isCriticalBeat) CriticalBeatEnd.Invoke(); else BeatEnd.Invoke();
+            StartCoroutine(InvokeActualBeatEndAfterSeconds(AudioTimeOffset, isCriticalBeat: isCriticalBeat));
+        }
+        beatCounter = (beatCounter + 1) % beatsPerBar;
+        nextBeatTime += timeBetweenBeats; // prepare next on-beat time
+        nextBeatStartForPlayer = nextBeatTime - preBeatTime; // prepare next time that a beat starts
+    }
+
+    IEnumerator InvokeActualBeatStartAfterSeconds(float seconds, bool isCriticalBeat = false)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (isCriticalBeat) ActualCriticalBeatStart.Invoke(); else BeatStart.Invoke();
+        yield return null;
+    }
+
+    IEnumerator InvokeActualBeatEndAfterSeconds(float seconds, bool isCriticalBeat = false)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (isCriticalBeat) ActualCriticalBeatEnd.Invoke(); else ActualBeatEnd.Invoke();
+        yield return null;
+    }
+
+
+    void DoTimeSignatureLogic()
+    {
+        int curTimeSecond = (int)Math.Truncate((Decimal)Time.time);
+        var curWindow = windowSpeedModifiers[currentSpeedModifierWindow];
+        while (curTimeSecond > curWindow.Item1)
+        {
+            currentSpeedModifierWindow++;
+            curWindow = windowSpeedModifiers[currentSpeedModifierWindow];
+        }
+        currentTimeSpeedModifier = curWindow.Item3; // can be 0, 1, 2 or 4
+        isQuietPart = currentTimeSpeedModifier == 0;
+        beatsPerBar = (isQuietPart) ? initial_beatsPerBar : initial_beatsPerBar * currentTimeSpeedModifier;
+        timeBetweenBeats = (isQuietPart) ? initial_timeBetweenBeats : initial_timeBetweenBeats / currentTimeSpeedModifier;
+    }
 
     IEnumerator StartTrackAndTrackSignature()
     {
@@ -179,100 +240,26 @@ public class TimeSignatureController : MonoBehaviour
         initial_criticalBeatNumber = criticalBeatNumber;
         initial_timeBetweenBeats = timeBetweenBeats;
 
-
-
         while (isTrackingTimeSignature)
         {
-
-            if (Time.time >= nextBeatDurationForPlayer) // this signals that a beat is starting (pre beat period)
+            if ((beatCounter + 1) % beatsPerBar == 0) // compute new time signature based on current tempo (we do it before the start of a bar to update the bar's structure)
             {
-                //if (beatCounter == criticalBeatNumber)
-                if (beatCounter % initial_beatsPerBar == criticalBeatNumber)
-                {
-                    if (!isQuietPart)
-                    {
-                        
-                        CriticalBeatStart.Invoke();
-                    }
-                }
-                else
-                {
-                    if (!isQuietPart)
-                    {
-                        BeatStart.Invoke();
-                    }
-                }
-                nextBeatDurationForPlayer = float.PositiveInfinity; // only a beat can specify when the next beat starts
+                DoTimeSignatureLogic();
+            }
+            if (Time.time >= nextBeatStartForPlayer) // this signals that a beat is starting (pre beat period)
+            {
+                DoBeatStartLogic();
             }
             if (Time.time >= nextBeatTime) // this signals that a beat ended (on-beat signal)
             {
-                //if (beatCounter == criticalBeatNumber)
-                if (beatCounter % initial_beatsPerBar == criticalBeatNumber)
-                {
-                    if (!isQuietPart)
-                    {
-                        CriticalBeatEnd.Invoke();
-                    }
-                }
-                else
-                {
-                    if (!isQuietPart)
-                    {
-                        BeatEnd.Invoke();
-                    }
-                }
-                beatCounter = (beatCounter + 1) % beatsPerBar;
-                nextBeatTime += timeBetweenBeats; // prepare next on-beat time
-                nextBeatDurationForPlayer += nextBeatTime - preBeatTime; // prepare next time that a beat starts
+                DoBeatEndLogic();
             }
-            if ((beatCounter + 1) % beatsPerBar == 0) // compute new time signature based on current tempo (we do it before the start of a bar to update the bar's structure)
-            {
-                int curTimeSecond = (int)Math.Truncate((Decimal)Time.time);
-                var curWindow = windowSpeedModifiers[currentSpeedModifierWindow];
-                while (curTimeSecond > curWindow.Item1)
-                {
-                    currentSpeedModifierWindow++;
-                    curWindow = windowSpeedModifiers[currentSpeedModifierWindow];
-                }
-                currentTimeSpeedModifier = curWindow.Item3; // can be 0, 1, 2 or 4
-                isQuietPart = currentTimeSpeedModifier == 0;
-                Debug.Log($"Current speed modifier is {currentTimeSpeedModifier} for window: {currentSpeedModifierWindow}");
-                beatsPerBar = (isQuietPart) ? initial_beatsPerBar : initial_beatsPerBar * currentTimeSpeedModifier;
-                //criticalBeatNumber = initial_criticalBeatNumber * currentTimeSpeedModifier;
-                timeBetweenBeats = (isQuietPart) ? initial_timeBetweenBeats : initial_timeBetweenBeats / currentTimeSpeedModifier;
-            }
+
+
             yield return null;
 
         }
         yield return null;
-    }
-
-    void ComputeWindowSpeedModifiers()
-    {
-        windowSpeedModifiers = new List<Tuple<float, float, int>>();
-
-        AddModifier(0, 17, 1);
-        AddModifier(17, 18, 2);
-        AddModifier(18, 29, 1);
-        AddModifier(29, 30, 2);
-        AddModifier(30, 41, 1);
-        AddModifier(41, 42, 2);
-        AddModifier(41, 42, 2);
-        AddModifier(41, 53, 1);
-        AddModifier(53, 54, 2);
-        AddModifier(54, 59, 4);
-        AddModifier(59, 60, 1);
-        AddModifier(60, 64, 4);
-        AddModifier(64, 67, 4);
-        AddModifier(67, 79, 4);
-        AddModifier(79, 89, 2);
-        AddModifier(89, 90, 4);
-
-        for (int i = 0; i < windowSpeedModifiers.Count; i++)
-        {
-            var p = windowSpeedModifiers[i];
-            Debug.Log($"-- modifier window {p.Item1}:{p.Item2} is {p.Item3}");
-        }
     }
 
 

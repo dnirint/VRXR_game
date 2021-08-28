@@ -7,22 +7,30 @@ public class DrumInteractionVisualization : MonoBehaviour
 {
 
     public GameObject drumTop;
-    public GameObject drumBody;
-
+    public float interactablePeriod;
     public bool isInteractable;
-    public Color[] colors = new Color[] { Color.white, Color.red, Color.green, Color.blue };
     public Color colorEnabled = Color.white;
-    public Color colorDisabled = Color.gray;
-
+    private Color colorDisabled = Color.gray;
+    private BattleDrum m_battleDrum;
     Material drumTopMat;
     public void EnterInteractable()
     {
-        if (isInteractable)
+        if (!m_battleDrum.isTargeted || isInteractable)
         {
             return;
         }
+        interactablePeriod = TimeSignatureController.Instance.preBeatTime;
+        Debug.Log($"Enter interactable");
         isInteractable = true;
-        drumTopMat.SetColor("_Color", colorEnabled);
+        drumTopMat.color = colorEnabled;
+        StartCoroutine(ExitInteractableAfterSeconds(interactablePeriod));
+    }
+
+    IEnumerator ExitInteractableAfterSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        ExitInteractable();
+        yield return null;
     }
 
     public void ExitInteractable()
@@ -32,15 +40,16 @@ public class DrumInteractionVisualization : MonoBehaviour
             return;
         }
         isInteractable = false;
-        drumTopMat.SetColor("_Color", colorDisabled);
+        drumTopMat.color = colorDisabled;
     }
     // Start is called before the first frame update
     void Start()
     {
-        //AudioManager.Instance.OnBeatStart.AddListener(EnterInteractable);
-        //AudioManager.Instance.OnBeatEnd.AddListener(ExitInteractable);
+        //TimeSignatureController.Instance.ActualCriticalBeatStart.AddListener(EnterInteractable);
+        m_battleDrum = GetComponent<BattleDrum>();
         drumTopMat = drumTop.GetComponent<Renderer>().material;
-    }
+        colorDisabled = drumTopMat.color;
+}
 
     // Update is called once per frame
     void Update()

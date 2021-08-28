@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
 
     void Start()
     {
-        Debug.Log($"New projectile with {timeToTarget}");
+        Debug.Log($"New projectile with {totalFlightTime}");
         //        startingPos = transform.position;
         target = targetGO.transform;
         targetPos = target.position;
@@ -60,7 +60,7 @@ public class Projectile : MonoBehaviour
     #region ProjectileMovementOverTime
 
     //[SerializeField] private float timeToTarget = 10f;
-    [SerializeField] public float timeToTarget = 1f;
+    [SerializeField] public float totalFlightTime = 1f;
 
 
     //    private Vector3 startingPos;
@@ -71,18 +71,21 @@ public class Projectile : MonoBehaviour
     //        transform.position = Vector3.Lerp(startingPos, targetPos, currentTime);
     //    }
 
+    public float timeToTarget;
     IEnumerator MoveToTargetInTime(UnityEvent onTargetHit = null, UnityEvent onTimeout = null)
     {
         float startTime = Time.time;
         float elapsed = 0;
         Vector3 startingPos = transform.position;
-        while (elapsed < timeToTarget)
+        while (elapsed < totalFlightTime)
         {
             elapsed = Time.time - startTime;
-            float ratio = Mathf.Min(elapsed / timeToTarget, 1);
+            float ratio = Mathf.Min(elapsed / totalFlightTime, 1);
 
             transform.position = Vector3.Lerp(startingPos, targetPos, ratio);
-            if (Vector3.Distance(transform.position, target.position) < 0.3f)
+            distanceToTarget = Vector3.Distance(transform.position, target.position);
+            timeToTarget = totalFlightTime - elapsed;
+            if (distanceToTarget < 0.3f)
             {
                 TargetHit.Invoke();
             }
