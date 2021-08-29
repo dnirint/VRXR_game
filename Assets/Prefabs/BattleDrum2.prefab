@@ -689,10 +689,42 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7099142381593604468, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ae76e203512c57d4986304c8b8601c93, type: 2}
+    - target: {fileID: -6187909604499047695, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
+    - target: {fileID: -5221607136450133853, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
+    - target: {fileID: -5087025274664604295, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
     - target: {fileID: 919132149155446097, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
       propertyPath: m_Name
       value: BodyDrum2
       objectReference: {fileID: 0}
+    - target: {fileID: 1256769705489538923, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
+    - target: {fileID: 5831361383472624201, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
+    - target: {fileID: 7983133931786300726, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
+    - target: {fileID: 9093883221240481611, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
 --- !u!4 &663753756835821454 stripped
@@ -767,6 +799,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UpperDrum2
       objectReference: {fileID: 0}
+    - target: {fileID: 3934088008995604741, guid: 175a421547ae4574293d48d006847991, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
+    - target: {fileID: 4694310645065916183, guid: 175a421547ae4574293d48d006847991, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13beb21a30bf50b48b90dd4a04f21c0e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 175a421547ae4574293d48d006847991, type: 3}
 --- !u!1 &1233806824871278612 stripped
