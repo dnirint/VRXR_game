@@ -9,8 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Water Specular
   m_Shader: {fileID: 4800000, guid: 104cb0e3a7464a3696069ea84b145eee, type: 3}
-  m_ShaderKeywords: EFFECT_ALBEDO2 EFFECT_FOAM EFFECT_MICROWAVE EFFECT_NORMALMAP2
-    EFFECT_PARALLAX EFFECT_REFLECTION
+  m_ShaderKeywords: EFFECT_FOAM EFFECT_MICROWAVE EFFECT_MIRROR EFFECT_NORMALMAP2
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -22,7 +21,7 @@ Material:
     m_TexEnvs:
     - _AlbedoTex1:
         m_Texture: {fileID: 2800000, guid: d6840f77873948aeba2cdce3985ccf47, type: 3}
-        m_Scale: {x: 60, y: 60}
+        m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTex2:
         m_Texture: {fileID: 2800000, guid: 21cbc816b57948b196ced72a3c33a909, type: 3}
@@ -147,7 +146,7 @@ Material:
     m_Floats:
     - _Albedo2Flow: 0.3
     - _Albedo2Tiling: 0.9
-    - _AlbedoContrast: 1.4
+    - _AlbedoContrast: 1.97
     - _AlbedoIntensity: 2.55
     - _Brightness: 1
     - _BumpScale: 1
@@ -168,12 +167,12 @@ Material:
     - _ExtraHeight: 0
     - _Factor: 202
     - _FadeLimit: 0.1
-    - _FoamAmplitude: 16
+    - _FoamAmplitude: 5
     - _FoamFlow: 12
-    - _FoamFrequency: 2
-    - _FoamGain: 0.6
-    - _FoamLacunarity: 8
-    - _FoamScale: 0.1
+    - _FoamFrequency: 1
+    - _FoamGain: 0.8
+    - _FoamLacunarity: 19.6
+    - _FoamScale: 10.74
     - _GlossAmount: 0.03
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -194,15 +193,15 @@ Material:
     - _MirrorContrast: 1
     - _MirrorFPOW: 5
     - _MirrorR0: 0.48
-    - _MirrorSaturation: 1
-    - _MirrorStrength: 1
+    - _MirrorSaturation: 0.9
+    - _MirrorStrength: 3.78
     - _MirrorWaveFlow: 5
     - _MirrorWavePow: 1
     - _MirrorWaveScale: 1
     - _Mitigation: 22.4
     - _Mode: 0
     - _NormalDetailFlow: 1
-    - _NormalMap1Strength: 0.8
+    - _NormalMap1Strength: 0.62
     - _NormalMap2Flow: 0.4
     - _NormalMap2Strength: 0.7
     - _NormalMap2Tiling: 1.1
@@ -228,15 +227,15 @@ Material:
     - _Reflect: 1
     - _ReflectionContrast: 1.5
     - _ReflectionSaturation: 0.2
-    - _ReflectionStrength: 1.2
+    - _ReflectionStrength: 0.89
     - _RefractionIntensity: 0.61
     - _RefractionSpeed: 1.61
     - _ReverseFlow: -5
     - _Saturation: 1
     - _SaturationRef: 0.5
-    - _Shininess: 0.6
+    - _Shininess: 0.715
     - _SmoothnessTextureChannel: 0
-    - _SoftFactor: 0.09
+    - _SoftFactor: 0.776
     - _SpecularHighlights: 1
     - _Speed: 0.5
     - _SpeedX: 0.1
@@ -256,12 +255,12 @@ Material:
     - _DiffuseColor: {r: 0.32352936, g: 0.32352936, b: 0.32352936, a: 1}
     - _EdgeColor: {r: 0.5588235, g: 0.5588235, b: 0.5588235, a: 1}
     - _EmissionColor: {r: 0.5441177, g: 0.5441177, b: 0.5441177, a: 1}
-    - _FoamColor: {r: 1.1448679, g: 1.5360911, b: 2.0227349, a: 1}
+    - _FoamColor: {r: 2.7005098, g: 2.7005098, b: 2.7005098, a: 1}
     - _FoamSoft: {r: 0.17, g: 0.3, b: 1.3, a: 0}
-    - _MirrorColor: {r: 1.1486983, g: 1.1486983, b: 1.1486983, a: 0.5}
+    - _MirrorColor: {r: 0.79897237, g: 0.7987399, b: 0.8102051, a: 0.5}
     - _MirrorDepthColor: {r: 0, g: 0, b: 0, a: 0.5}
     - _ReflectColor: {r: 0.2258196, g: 0.23354737, b: 0.23921569, a: 1}
     - _ReflectionColor: {r: 0.22749412, g: 0.23070937, b: 0.23921569, a: 0.5}
-    - _SpecColor: {r: 0.29411766, g: 0.33075517, b: 0.4117647, a: 1}
+    - _SpecColor: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 1}
     - _SpecularColor: {r: 0.5808823, g: 0.5808823, b: 0.5808823, a: 1}
   m_BuildTextureStacks: []
