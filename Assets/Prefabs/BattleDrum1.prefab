@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
+  isInteractable: 0
 --- !u!114 &1645347922531521598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drumTop: {fileID: 4908227761788982767}
-  drumTopParent: {fileID: 5758677440196012315}
+  drumTopParent: {fileID: 2911806073331775475}
   reactBlipFactor: 0.5
 --- !u!111 &8347498207583776867
 Animation:
@@ -380,13 +381,7 @@ MonoBehaviour:
   drumTop: {fileID: 5019327926159640758}
   interactablePeriod: 0
   isInteractable: 0
-  colors:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
   colorEnabled: {r: 1, g: 1, b: 1, a: 1}
-  colorDisabled: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &4908227761788982767
 GameObject:
   m_ObjectHideFlags: 0

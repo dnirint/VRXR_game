@@ -33,6 +33,7 @@ public class BattleDrum : MonoBehaviour
         if (isInteractable)
         {
             BossToPlayerInteractions.Instance.DestroyClosestProjectileOnSameLane(gameObject);
+            PlayerAudio.Instance.PlayBeep();
         }
         
     }

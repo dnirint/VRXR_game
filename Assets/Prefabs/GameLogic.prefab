@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6228036409566733555}
   - component: {fileID: 941035371343477678}
   - component: {fileID: 6883455681880576189}
-  - component: {fileID: 3111323506908508008}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -45,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375ea6d216d4d4e47871ce53c63fbe33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileExplosionPrefab: {fileID: 3904522467877712947, guid: 20b3a80f68b8aa848b354317f000da12, type: 3}
+  projectilePrefabs: []
   projectilePrefab: {fileID: 0}
   bossTargets: []
   projectileParent: {fileID: 0}
@@ -62,15 +63,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ade73b865418514396b2a51e6d1d65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3111323506908508008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8519937722777335830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de0e4374664a1e04ea027e4a0a9e1c5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  ProjectileHitDrum:
+    m_PersistentCalls:
+      m_Calls: []

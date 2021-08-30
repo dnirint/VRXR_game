@@ -47,8 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b071f9ba9b0f4ba6fe2e00db316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drumTop: {fileID: 4908227761788982767}
-  drumBody: {fileID: 0}
   interactionController: {fileID: 494899638531515835}
   drumCollision: {fileID: 1878825473595390659}
 --- !u!114 &494899638531515835
@@ -105,8 +103,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4908227761788982767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.301, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.01, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.285, z: -0}
+  m_LocalScale: {x: 0.5, y: 0.05, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8596138230326065437}
   m_RootOrder: 0

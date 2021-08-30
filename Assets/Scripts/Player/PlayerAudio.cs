@@ -6,10 +6,12 @@ public class PlayerAudio : MonoBehaviour
 {
 
     public AudioClip audioClip;
+    public AudioClip beep;
     public AudioSource lowAudioSource;
     public AudioLowPassFilter lowPassFilter;
     public AudioSource highAudioSource;
     public AudioHighPassFilter highPassFilter;
+    public AudioSource soundEffects;
 
     public  float FILTER_COMMON_AGREED_THRESHOLD = 3000f;
     public  float POOP_HIGH_PASS_THRESHOLD = 3000f;
@@ -30,6 +32,14 @@ public class PlayerAudio : MonoBehaviour
     {
         lowAudioSource.clip = newClip;
         highAudioSource.clip = newClip;
+        soundEffects.volume = 0.1f;
+        soundEffects.clip = beep;
+    }
+
+    public void PlayBeep()
+    {
+        soundEffects.time = 0;
+        soundEffects.Play();
     }
 
     void SetFilterParams()
@@ -70,6 +80,7 @@ public class PlayerAudio : MonoBehaviour
 
     void Update()
     {
+
         if (shouldUnpoop && Time.time > nextUnpoopTime)
         {
             UnpoopBeat();

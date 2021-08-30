@@ -165,7 +165,7 @@ public class TimeSignatureController : MonoBehaviour
     public float nextBeatStartForPlayer = float.PositiveInfinity;
     public int currentTimeSpeedModifier = 1;
     public int currentSpeedModifierWindow = 0;
-    public float preBeatTime = 0.05f;
+    public float preBeatTime = 0.5f;
     public bool isQuietPart = true;
 
     private int initial_beatsPerBar;

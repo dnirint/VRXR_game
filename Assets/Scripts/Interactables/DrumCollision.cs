@@ -12,7 +12,7 @@ public class DrumCollision : MonoBehaviour
     private float collisionCooldown = 0.1f;
     private float lastCollision = 0f;
     
-    private float minimumVelocity = 2;
+    private float minimumVelocity = 0.5f;
     private float degreeThreshold = 90; // Difference allowed between the normal of the hit and the direction we allow 
     private DrumInteractionVisualization m_interactionVisualization;
     // (UP)

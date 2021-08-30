@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class BossToPlayerInteractions : MonoBehaviour
 {
     public static BossToPlayerInteractions Instance { get; private set; } = null;
 
-
+    public GameObject projectileExplosionPrefab;
     public GameObject[] projectilePrefabs;
     public GameObject projectilePrefab;
     public GameObject[] bossTargets;
@@ -21,7 +22,7 @@ public class BossToPlayerInteractions : MonoBehaviour
     private GameObject boss;
 
 
-    private float switchTargetAttackCooldown = 1;
+    private float switchTargetAttackCooldown = 3;
     private float timeBetweenSwitches = 10;
     private bool shouldSwitchTargets = true;
 
@@ -130,9 +131,15 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
     }
 
-
+    private bool alternatingAttackFlag = false;
     void AttackTarget()
     {
+        alternatingAttackFlag = !alternatingAttackFlag;
+        if (alternatingAttackFlag)
+        {
+            return;
+        }
+        
         if (isAttacking && lastAttackTime + attackCooldown < Time.time)
 //            if (isAttacking)
         {
@@ -195,13 +202,16 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     }
 
-    void DestroyProjectileInQueue(GameObject target)
+    void DestroyProjectileInQueue(GameObject target, bool explosion=false)
     {
         UpdateCurrentClosestProjectile();
         if (drumToProjectileQueue[target].Count > 0)
         {
             var projectile = drumToProjectileQueue[target].Dequeue();
-
+            if (explosion)
+            {
+                Instantiate(projectileExplosionPrefab, projectile.transform.position, projectile.transform.rotation);
+            }
             Destroy(projectile.gameObject);
         }
         else
@@ -222,12 +232,14 @@ public class BossToPlayerInteractions : MonoBehaviour
         {
             return;
         }
-        DestroyProjectileInQueue(target);
+        DestroyProjectileInQueue(target, explosion: true);
     }
 
-
+    public UnityEvent SwitchedTargets;
     IEnumerator SwitchTargets()
     {
+        curTargetIndex = 0;
+        yield return new WaitForSeconds(timeBetweenSwitches);
         while (shouldSwitchTargets)
         {
             if (isAttacking)
@@ -244,13 +256,14 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     void SetNewPlatform()
     {
-        int new_target_index = Random.Range(0, bossTargets.Length);
-        while (curTargetIndex == new_target_index)
-        {
-            new_target_index = Random.Range(0, bossTargets.Length);
-        }
+        curTargetIndex = (curTargetIndex + 1) % platformTargets.Count;
+        //int new_target_index = Random.Range(0, bossTargets.Length);
+        //while (curTargetIndex == new_target_index)
+        //{
+        //    new_target_index = Random.Range(0, bossTargets.Length);
+        //}
 
-        curTargetIndex = new_target_index;
+        //curTargetIndex = new_target_index;
         specificTargetInPlatformIndex = 0;
     }
 }
