@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  isTargeted: 0
+  isInteractable: 0
 --- !u!114 &1645347922531521598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,7 +692,7 @@ PrefabInstance:
     - target: {fileID: -7099142381593604468, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ae76e203512c57d4986304c8b8601c93, type: 2}
+      objectReference: {fileID: 2100000, guid: 28eff962ce0caf0488688e60172fa9b3, type: 2}
     - target: {fileID: -6187909604499047695, guid: 593e81497bd03b549864895fb3f28dc0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -795,6 +795,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6233309332883890777, guid: 175a421547ae4574293d48d006847991, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 28eff962ce0caf0488688e60172fa9b3, type: 2}
     - target: {fileID: 919132149155446097, guid: 175a421547ae4574293d48d006847991, type: 3}
       propertyPath: m_Name
       value: UpperDrum2
