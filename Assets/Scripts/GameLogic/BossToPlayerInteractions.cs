@@ -133,14 +133,17 @@ public class BossToPlayerInteractions : MonoBehaviour
         }
     }
 
-    private bool alternatingAttackFlag = false;
+    private int skipAttackCounter = 0;
+    private int skipOnAttackNumber = 3;
     void AttackTarget()
     {
-        alternatingAttackFlag = !alternatingAttackFlag;
-        if (alternatingAttackFlag)
+        skipAttackCounter++;
+        if (skipAttackCounter%skipOnAttackNumber == 0)
         {
+            skipAttackCounter = 0;
             return;
         }
+
         
         if (isAttacking && lastAttackTime + attackCooldown < Time.time)
 //            if (isAttacking)

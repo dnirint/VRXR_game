@@ -21,6 +21,7 @@ public class TeleportationDrum : MonoBehaviour
         if (teleportTargetTransform != null)
         {
             PlayerMovement.Instance.TeleportToTarget(teleportTargetTransform);
+            PlayerAudio.Instance.PlayWoosh();
         }
     }
 

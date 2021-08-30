@@ -7,11 +7,13 @@ public class PlayerAudio : MonoBehaviour
 
     public AudioClip audioClip;
     public AudioClip beep;
+    public AudioClip woosh;
     public AudioSource lowAudioSource;
     public AudioLowPassFilter lowPassFilter;
     public AudioSource highAudioSource;
     public AudioHighPassFilter highPassFilter;
-    public AudioSource soundEffects;
+    public AudioSource telewooshSource;
+    public AudioSource beepSource;
 
     public  float FILTER_COMMON_AGREED_THRESHOLD = 3000f;
     public  float POOP_HIGH_PASS_THRESHOLD = 3000f;
@@ -32,14 +34,24 @@ public class PlayerAudio : MonoBehaviour
     {
         lowAudioSource.clip = newClip;
         highAudioSource.clip = newClip;
-        soundEffects.volume = 0.03f;
-        soundEffects.clip = beep;
+        beepSource.volume = 0.03f;
+        beepSource.clip = beep;
+        telewooshSource.clip = woosh;
+        telewooshSource.volume = 0.4f;
+        telewooshSource.pitch = 2f;
+
+    }
+
+    public void PlayWoosh()
+    {
+        telewooshSource.time = 0.3f;
+        telewooshSource.Play();
     }
 
     public void PlayBeep()
     {
-        soundEffects.time = 0;
-        soundEffects.Play();
+        beepSource.time = 0;
+        beepSource.Play();
     }
 
     void SetFilterParams()
