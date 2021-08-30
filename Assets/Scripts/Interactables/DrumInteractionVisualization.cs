@@ -20,7 +20,7 @@ public class DrumInteractionVisualization : MonoBehaviour
             return;
         }
         interactablePeriod = TimeSignatureController.Instance.preBeatTime;
-        Debug.Log($"Enter interactable");
+        //Debug.Log($"Enter interactable");
         isInteractable = true;
         drumTopMat.color = colorEnabled;
         StartCoroutine(ExitInteractableAfterSeconds(interactablePeriod));

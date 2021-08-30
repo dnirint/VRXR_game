@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
 
     void Start()
     {
-        Debug.Log($"New projectile with {totalFlightTime}");
+        //Debug.Log($"New projectile with {totalFlightTime}");
         //        startingPos = transform.position;
         target = targetGO.transform;
         targetPos = target.position;
@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
 
     void OnTimeoutReached()
     {
-        Debug.Log($"TIMEOUT!!");
+        //Debug.Log($"TIMEOUT!!");
 
         Destroy(gameObject);
     }

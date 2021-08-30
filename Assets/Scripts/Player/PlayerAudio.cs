@@ -32,7 +32,7 @@ public class PlayerAudio : MonoBehaviour
     {
         lowAudioSource.clip = newClip;
         highAudioSource.clip = newClip;
-        soundEffects.volume = 0.1f;
+        soundEffects.volume = 0.03f;
         soundEffects.clip = beep;
     }
 

@@ -31,6 +31,8 @@ public class BossToPlayerInteractions : MonoBehaviour
 
     private Queue<Projectile> projectileOrder;
 
+    public UnityEvent OnSuccessfulDrumhit;
+
     private void Awake()
     {
         if (Instance == null)
@@ -145,10 +147,10 @@ public class BossToPlayerInteractions : MonoBehaviour
         {
             lastAttackTime = Time.time;
             int startTargetIndex = curTargetIndex;
-            Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
+            //Debug.Log($"Targeting {curTargetIndex}/{bossTargets.Length}");
 //            int newTarget = GetRandomTargetInCluster(curTargetIndex);
             int newTarget = Random.Range(0, 4);
-            Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
+            //Debug.Log($"Targeting drum {newTarget} in platform {curTargetIndex}");
             var newProjectileGO = Instantiate(projectilePrefabs[newTarget], projectileParent);
 
 //            var newProjectileGO = Instantiate(projectilePrefab, projectileParent);
@@ -233,6 +235,7 @@ public class BossToPlayerInteractions : MonoBehaviour
             return;
         }
         DestroyProjectileInQueue(target, explosion: true);
+        OnSuccessfulDrumhit.Invoke();
     }
 
     public UnityEvent SwitchedTargets;
